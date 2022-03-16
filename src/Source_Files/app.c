@@ -103,6 +103,9 @@ const OS_FLAGS All_LED_events = 0xf;
 GLIB_Rectangle_t left_wall;
 GLIB_Rectangle_t right_wall;
 
+GLIB_Rectangle_t shield;
+
+
 /*******************************************************************************
  * Task Control Blocks
  ******************************************************************************/
@@ -362,21 +365,21 @@ void task_init ()
 //      (OS_OPT_TASK_STK_CLR),
 //      &err);
 //    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-
-    OSTaskCreate(&IdleTask_TCB, /* Create the start task */
-      "idle task",
-      Idle,
-      DEF_NULL,
-      25,
-      &Idle_TaskStack[0],
-      (TASK_STK_SIZE / 10),
-      TASK_STK_SIZE,
-      0u,
-      0u,
-      DEF_NULL,
-      (OS_OPT_TASK_STK_CLR),
-      &err);
-    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//
+//    OSTaskCreate(&IdleTask_TCB, /* Create the start task */
+//      "idle task",
+//      Idle,
+//      DEF_NULL,
+//      25,
+//      &Idle_TaskStack[0],
+//      (TASK_STK_SIZE / 10),
+//      TASK_STK_SIZE,
+//      0u,
+//      0u,
+//      DEF_NULL,
+//      (OS_OPT_TASK_STK_CLR),
+//      &err);
+//    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 }
 
@@ -775,178 +778,68 @@ static void LCD_Display(void* random_arguement_parameter)
     right_wall.yMin = 0;
     right_wall.yMax = 127;
 
+    shield.xMin = 75;
+    shield.xMax = 100;
+    shield.yMin = 120;
+    shield.yMax = 127;
+
 
     int32_t ball_x = 65;
-    int32_t ball_y = 0;
+    int32_t ball_y = 65;
 
-
-
-
-
-
-
-    /* Fill lcd with background color */
-    GLIB_clear(&glibContext);
-
-
-    GLIB_drawRectFilled   (   &glibContext,
-        &left_wall
-      );
-
-    GLIB_drawRectFilled   (   &glibContext,
-            &right_wall
-          );
-
-//    // Draw Boundary Lines
-//    GLIB_drawLine   (  &glibContext,
-//        1,
-//        1,
-//        1,
-//        155
-//      );
-//
-//
-//    GLIB_drawLine   (  &glibContext,
-//        1,
-//        56,
-//        155,
-//        1
-//      );
-
-
-//    /* Use Narrow font */
-//    GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
-//
-//    /* Draw text on the memory lcd display*/
-//    GLIB_drawStringOnLine(&glibContext,
-//                          "RTOS Lab 7",
-//                          0,
-//                          GLIB_ALIGN_LEFT,
-//                          5,
-//                          5,
-//                          true);
-
-
-    DMD_updateDisplay();
-
-
-  char string_direction [5];
-
+    uint32_t numPoints = 6;
+    int32_t ball_polyPoints[12] = {ball_x, ball_y + 6,
+                                ball_x + 5, ball_y + 3,
+                                ball_x + 5, ball_y - 3,
+                                ball_x , ball_y - 6,
+                                ball_x - 5, ball_y - 3,
+                                ball_x - 5, ball_y + 3};
 
   while(1){
-//      int speed = 15;
-//      enum vehicle_direction direction_int;
-//
-//      OSMutexPend (&speed_set_point_mux,
-//                                  100,
-//                                  OS_OPT_PEND_BLOCKING,
-//                                  NULL,
-//                                  &err);
-//      if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-//        {
-//          speed = current_speed_set_point.current_speed;
-//          OSMutexPost(&speed_set_point_mux,
-//                                                OS_OPT_POST_NONE,
-//                                                &err);
-//        }
-//      OSMutexPend (&direction_mux,
-//                             100,
-//                             OS_OPT_PEND_BLOCKING,
-//                             NULL,
-//                             &err);
-//      if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-//      {
-//          direction_int = current_vehicle_direction.direction;
-//          OSMutexPost(&direction_mux,
-//                      OS_OPT_POST_NONE,
-//                      &err);
-//      }
-//
-//
-//
-//
-//
-//      char current_speed [20] = "Current Speed: ";
-//      char current_direction [20] = "Direction: ";
-//
-//      for (int i=0; i < 5; i ++)
-//      {
-//        string_direction [i] = '\0';
-//      }
-//
-//      switch(direction_int)
-//      {
-//        case (HARD_LEFT):
-//
-//          string_direction[0] = 'H';
-//          string_direction[1] = 'L';
-//          string_direction[2] = '\0';
-//          break;
-//        case (LEFT):
-//          string_direction[0] = 'L';
-//          string_direction[1] = '\0';
-//          break;
-//        case (RIGHT):
-//          string_direction[0] = 'R';
-//          string_direction[1] = ' ';
-//          string_direction[2] = '\0';
-//          break;
-//        case (HARD_RIGHT):
-//          string_direction[0] = 'H';
-//          string_direction[1] = 'R';
-//          string_direction[2] = '\0';
-//          break;
-//        case (STRAIGHT):
-//          string_direction[0] = 'S';
-//          string_direction[1] = ' ';
-//          string_direction[2] = '\0';
-//          break;
-//        default:
-//          string_direction[0] = 'S';
-//          string_direction[1] = '\0';
-//          break;
-//
-//      }
-//
-//      // char string_direction [5] = "HL";
-//
-//      char string_speed [5] = "\0";
-//
-//      itoa(speed, string_speed, 10);
-//
-//      strncat(current_speed, string_speed, 5);
-//      strncat(current_direction, string_direction, 5);
-//
-//
-//      GLIB_clear(&glibContext);
-//
-//      /* Draw text on the memory lcd display*/
-//      GLIB_drawStringOnLine(&glibContext,
-//                            "RTOS Lab 7",
-//                            0,
-//                            GLIB_ALIGN_LEFT,
-//                            5,
-//                            5,
-//                            true);
-//
-//      GLIB_drawStringOnLine(&glibContext,
-//                            current_speed,
-//                            1,
-//                            GLIB_ALIGN_LEFT,
-//                            5,
-//                            5,
-//                            true);
-//      GLIB_drawStringOnLine(&glibContext,
-//                            current_direction,
-//                            2,
-//                            GLIB_ALIGN_LEFT,
-//                            5,
-//                            5,
-//                            true);
-//
-//      DMD_updateDisplay();
-//
-//      OSTimeDly(10, OS_OPT_TIME_DLY, &err);
+
+      ball_y = (ball_y + 1) % 127;
+
+
+      // Update the polygon points of the
+      ball_polyPoints[0] = ball_x;
+      ball_polyPoints[1] = ball_y + 6;
+      ball_polyPoints[2] = ball_x + 5;
+      ball_polyPoints[3] = ball_y + 3;
+      ball_polyPoints[4] = ball_x + 5;
+      ball_polyPoints[5] = ball_y - 3;
+      ball_polyPoints[6] = ball_x;
+      ball_polyPoints[7] = ball_y - 6;
+      ball_polyPoints[8] = ball_x - 5;
+      ball_polyPoints[9] = ball_y - 3;
+      ball_polyPoints[10] = ball_x - 5;
+      ball_polyPoints[11] = ball_y + 3;
+
+      /* Fill lcd with background color */
+      GLIB_clear(&glibContext);
+
+
+      GLIB_drawRectFilled   (   &glibContext,
+          &left_wall
+        );
+
+      GLIB_drawRectFilled   (   &glibContext,
+              &right_wall
+            );
+
+
+      GLIB_drawRectFilled   (   &glibContext,
+                  &shield
+                );
+
+
+      GLIB_drawPolygonFilled  (   &glibContext,
+          numPoints,
+          ball_polyPoints
+        );
+      DMD_updateDisplay();
+
+
+//      OSTimeDly(1, OS_OPT_TIME_DLY, &err);
 
 
   }
