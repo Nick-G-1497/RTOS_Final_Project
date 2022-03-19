@@ -28,6 +28,7 @@
 #include "os_trace.h"
 #include "em_emu.h"
 #include "queue.h"
+#include "pwm.h"
 
 /********************************************************************************
  * Macro Expressions
@@ -49,29 +50,31 @@
 #define TASK_STK_SIZE 256
 
 /**
- * OS level priority of the task dedicated to setting the speed set-point
+ * OS level priority of the boost task
  */
-#define SPEED_SETPOINT_PRIORITY 18
+#define BOOST_TASK_PRIORITY 18
 
 /**
- * OS level priority of the task dedicated to monitoring the vehicle
+ * OS level priority of the laser task
  */
-#define VEHICLE_MONITOR_PRIORITY 18
+#define LASER_TASK_PRIORITY 18
 
 /**
- * OS level priority of the task dedicated to determining the vehicle direction
+ * OS level priority of the task dedicated to determining the slider state
  */
-#define VEHICLE_DIRECTION_PRIORITY 18
+#define SLIDER_STATE_TASK_PRIORITY 18
 
 
 /**
- * OS level priority of the LED output task
+ * OS level priority of the task dedicated to the desired shield force
  */
-#define LED_OUTPUT_PRIORITY 18
+#define DESIRED_SHIELD_FORCE_PRIORITY 18
 
 /**
- * OS level priority of the LCD Display
+ * OS level priority of the shield force task
  */
+#define SHIELD_FORCE_TASK_PRIORITY 20
+
 #define LCD_DISPLAY_PRIORITY 20
 
 /**
@@ -84,36 +87,26 @@
  * Custom Data Types
  ******************************************************************************************************************/
 /**
- * @brief Speed Set Point
+ * @brief Harkonnen Mass Position type
  */
-struct SpeedSetPoint_t
+typedef struct Harkonnen_Mass_Position_t
 {
-  int current_speed;
-  unsigned int speed_increments;
-  unsigned int speed_decrements;
+  int x;
+  int y;
+  float velocity_x;
+  float velocity_y;
 };
 
-/**
- * @brief Vehicle Direction Enumeration
- */
-enum vehicle_direction
-{
-  LEFT,     //!< LEFT
-  HARD_LEFT,//!< HARD_LEFT
-  RIGHT,    //!< RIGHT
-  HARD_RIGHT,//!< HARD_RIGHT
-  STRAIGHT
-};
 
 /**
  * @brief Vehicle Direction Structure
  */
-struct VehicleDirection_t
+typedef struct ShieldPosition_t
 {
-  enum vehicle_direction direction;
-  unsigned int time_current_direction_held_constant_ms;
-  unsigned int num_left_turns;
-  unsigned int num_right_turns;
+  int x;
+  float velocity_x;
+  float acceleration_x;
+  bool isBoosted;
 };
 
 
@@ -146,67 +139,22 @@ void GPIO_ODD_IRQHandler(void);
 /**
  * @brief Semaphore used with timer and touch slider
  */
-static OS_SEM button_semaphore;
 
-static OS_MUTEX speed_set_point_mux;
+static OS_MUTEX HM_mux;
 
-static OS_MUTEX direction_mux;
+static OS_MUTEX shield_mux;
 
-static OS_SEM slider_semaphore;
 
-static OS_SEM monitor_semaphore;
-
-///**
-// * @brief Button zero semaphore
-// */
-//static OS_SEM button0_semaphore;
-//
-//
-///**
-// * @brief Button One semaphore
-// */
-//static OS_SEM button1_semaphore;
 
 /******************************************************************************
  * Event Flag
  *****************************************************************************/
-///**
-// * @brief Button Event Flag Group
-// */
-//extern static OS_FLAG_GRP button_event_flag_group;
 
-//void post_button0_event();
-//void post_button1_event();
 /******************************************************************************
  * OS Timer
  *****************************************************************************/
-static OS_TMR slider_timer;
-
-static OS_TMR direction_timer;
-
-static OS_TMR monitor_timer;
-
-
-/**
- * @brief Slider timer callback function
- * @param p_tmr
- * @param p_arg
- */
-void steering_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
-
-/**
- * @Monitor Timer Callback Function
- * @param p_tmr
- * @param p_arg
- */
-void monitor_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
-
-/**
- * @brief Turn timer callback function
- * @param p_tmr timer pointer
- * @param p_arg pointer arguement
- */
-void turn_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
+static OS_TMR PWM0_timer;
+static OS_TMR PWM1_timer;
 
 
 /**
