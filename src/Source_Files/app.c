@@ -423,7 +423,8 @@ static void DesiredShieldForceTask(void* random_arguement_parameter)
 
   while (1)
     {
-
+      OSTimeDly(1, OS_OPT_TIME_DLY, &err);
+      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
     }
 
 }
