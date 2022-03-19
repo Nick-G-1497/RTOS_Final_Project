@@ -26,7 +26,7 @@ void pwm_callback_function (OS_TMR* p_tmr, void* p_arg)
 
     // compare the counter against the DC (duty cycle) value. On match
     //      drive PWM pin LOW
-    if (this->counter >= this->duty_cycle_percent/100)
+    if (this->counter >= this->duty_cycle_percent)
     {
         digitalWrite(this->port, this->pin, 0);
     }

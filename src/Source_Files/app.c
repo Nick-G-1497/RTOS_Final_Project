@@ -51,7 +51,7 @@ struct node_t* fifo;
 
 pwm_paramaters_t PWM0 = {
   .frequency_HZ = 50, // frequency
-  .duty_cycle_percent = 25, // duty cycle
+  .duty_cycle_percent = 98, // duty cycle
   // .timer = &PWM0_timer, // timer
   .timer_name = "PWM0 Timer", // name
   .port = gpioPortF, // port
