@@ -2,7 +2,7 @@ gecko_sdk_3.2.2/platform/CMSIS/RTOS2/Source/os_systick.o: \
  C\:/SiliconLabs/SimplicityStudio/v5/developer/sdks/gecko_sdk_suite/v3.2/platform/CMSIS/RTOS2/Source/os_systick.c \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\toolchain\inc\sl_gcc_preinclude.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\cmsis\rtos2\include\os_tick.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\autogen/RTE_Components.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/RTE_Components.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\em_device.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b500f1024gl125.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\cmsis\include\core_cm4.h \
@@ -59,7 +59,7 @@ gecko_sdk_3.2.2/platform/CMSIS/RTOS2/Source/os_systick.o: \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_af_pins.h
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\cmsis\rtos2\include\os_tick.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\autogen/RTE_Components.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/RTE_Components.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\em_device.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b500f1024gl125.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\cmsis\include\core_cm4.h:

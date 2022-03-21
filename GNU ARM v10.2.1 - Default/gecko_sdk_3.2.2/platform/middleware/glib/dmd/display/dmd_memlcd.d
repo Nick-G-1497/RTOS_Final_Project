@@ -66,11 +66,11 @@ gecko_sdk_3.2.2/platform/middleware/glib/dmd/display/dmd_memlcd.o: \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_bus.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\autogen/sl_component_catalog.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/emlib_core_debug_config.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_cmu_compat.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/sl_memlcd_usart_config.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_memlcd_usart_config.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\driver\memlcd\src\ls013b7dh03\sl_memlcd_display.h
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\dmd\dmd.h:
@@ -138,9 +138,9 @@ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_bus.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\autogen/sl_component_catalog.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/emlib_core_debug_config.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_cmu_compat.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/sl_memlcd_usart_config.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_memlcd_usart_config.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\driver\memlcd\src\ls013b7dh03\sl_memlcd_display.h:

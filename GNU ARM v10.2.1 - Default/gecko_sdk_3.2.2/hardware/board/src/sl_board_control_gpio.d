@@ -4,7 +4,7 @@ gecko_sdk_3.2.2/hardware/board/src/sl_board_control_gpio.o: \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\board\inc\sl_board_control.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_enum.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/sl_board_control_config.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_board_control_config.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\em_device.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b500f1024gl125.h \
@@ -64,13 +64,13 @@ gecko_sdk_3.2.2/hardware/board/src/sl_board_control_gpio.o: \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_assert.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\autogen/sl_component_catalog.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/emlib_core_debug_config.h
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\toolchain\inc\sl_gcc_preinclude.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\board\inc\sl_board_control.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_enum.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/sl_board_control_config.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_board_control_config.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\em_device.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b500f1024gl125.h:
@@ -130,5 +130,5 @@ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_assert.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\autogen/sl_component_catalog.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\Lab7_All_Includes\config/emlib_core_debug_config.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h:

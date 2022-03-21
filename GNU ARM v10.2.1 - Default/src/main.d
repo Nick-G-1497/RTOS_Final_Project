@@ -113,6 +113,8 @@ src/main.o: ../src/main.c \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h \
  C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\SLSTK3402A_EFM32PG12\config/bspconfig.h \
  C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\common\bsp/bsp_bcp.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_system.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_timer.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/cmu.h \
  C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\bsp\siliconlabs\generic\include/bsp_os.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/gpio.h
@@ -230,6 +232,8 @@ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_File
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h:
 C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\SLSTK3402A_EFM32PG12\config/bspconfig.h:
 C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\common\bsp/bsp_bcp.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_system.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_timer.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/cmu.h:
 C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\bsp\siliconlabs\generic\include/bsp_os.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/gpio.h:

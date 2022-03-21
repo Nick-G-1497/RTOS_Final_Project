@@ -39,6 +39,12 @@ int main(void)
   CMU_ClockSelectSet(cmuClock_HF, cmuSelect_HFRCO);
   CMU_OscillatorEnable(cmuOsc_HFXO, false, false);
 
+  /* Enable clock for GPIO module */
+  CMU_ClockEnable(cmuClock_GPIO, true);
+  
+  /* Enable clock for TIMER0 module */
+  CMU_ClockEnable(cmuClock_TIMER0, true);
+
   cmu_open();
 
   BSP_SystemInit();                                           /* Initialize System.                                   */

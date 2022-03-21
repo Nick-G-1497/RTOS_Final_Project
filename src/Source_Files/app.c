@@ -207,7 +207,6 @@ static void Idle(void* random_arguement_parameter);
  *   Interrupt handler to service pressing of buttons
  ******************************************************************************/
 void GPIO_EVEN_IRQHandler(void){
-  RTOS_ERR err;
 
 
   GPIO_IntClear(1 << BUTTON0_pin);
@@ -418,8 +417,8 @@ static void DesiredShieldForceTask(void* random_arguement_parameter)
   RTOS_ERR err;
   PP_UNUSED_PARAM(random_arguement_parameter);
 
-  pwm_init (&PWM0_timer, &PWM0);
-  pwm_start(&PWM0_timer, &PWM0);
+  pwm_init (PWM0_TIMER, &PWM0);
+  pwm_start(PWM0_TIMER);
 
   while (1)
     {
