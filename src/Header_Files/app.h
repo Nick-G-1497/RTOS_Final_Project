@@ -25,10 +25,12 @@
 #include "em_chip.h"
 #include "os.h"
 #include "bsp_os.h"
+#include "config_v3.h"
 #include "os_trace.h"
 #include "em_emu.h"
 #include "queue.h"
 #include "pwm.h"
+
 
 /********************************************************************************
  * Macro Expressions
@@ -64,6 +66,18 @@
  */
 #define SLIDER_STATE_TASK_PRIORITY 18
 
+/**
+ * OS level priority to the task updating the Harkonnen Mass Physics
+ */
+#define HM_PHYSICS_PRIORITY 18
+
+
+/**
+ * OS level priority to the task updating the shield position, velocity and
+ * acceleration
+ */
+#define SHIELD_PHYSICS_PRIORITY 18
+
 
 /**
  * OS level priority of the task dedicated to the desired shield force
@@ -82,32 +96,6 @@
  */
 #define IDLETASK_PRIORITY 25
 
-
-/*******************************************************************************************************************
- * Custom Data Types
- ******************************************************************************************************************/
-/**
- * @brief Harkonnen Mass Position type
- */
-typedef struct Harkonnen_Mass_Position_t
-{
-  int x;
-  int y;
-  float velocity_x;
-  float velocity_y;
-};
-
-
-/**
- * @brief Vehicle Direction Structure
- */
-typedef struct ShieldPosition_t
-{
-  int x;
-  float velocity_x;
-  float acceleration_x;
-  bool isBoosted;
-};
 
 
 
@@ -136,6 +124,15 @@ void GPIO_ODD_IRQHandler(void);
 /******************************************************************************
  * Semaphores
  *****************************************************************************/
+static OS_SEM slider_semaphore;
+static OS_SEM LCD_semaphore;
+static OS_SEM shield_physics_semaphore;
+static OS_SEM hm_physics_semaphore;
+
+
+
+
+
 /**
  * @brief Semaphore used with timer and touch slider
  */
@@ -153,8 +150,10 @@ static OS_MUTEX shield_mux;
 /******************************************************************************
  * OS Timer
  *****************************************************************************/
-static OS_TMR PWM0_timer;
-static OS_TMR PWM1_timer;
+//static OS_TMR PWM0_timer;
+//static OS_TMR PWM1_timer;
+static OS_TMR slider_timer;
+static OS_TMR LCD_timer;
 
 
 /**
@@ -180,5 +179,11 @@ void app_init(void);
  */
 void task_init(void);
 
+
+void lcd_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
+void slider_state_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
+void shield_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
+
+void hm_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
 
 #endif  // APP_H

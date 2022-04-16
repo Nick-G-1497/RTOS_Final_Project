@@ -19,27 +19,27 @@ void TIMER0_IRQHandler(void)
 
 
   // increment the counter variable
-   pwm0_params->counter ++;
+   pwm0_params.counter ++;
 
-    if (pwm0_params->counter == 1)
+    if (pwm0_params.counter == 1)
     {
-        digitalWrite(pwm0_params->port, pwm0_params->pin, 1);
+        digitalWrite(pwm0_params.port, pwm0_params.pin, 1);
     }
 
     // compare the counter against the DC (duty cycle) value. On match
     //      drive PWM pin LOW
-    if (pwm0_params->counter >= pwm0_params->duty_cycle_percent)
+    if (pwm0_params.counter >= pwm0_params.duty_cycle_percent)
     {
-        digitalWrite(pwm0_params->port, pwm0_params->pin, 0);
+        digitalWrite(pwm0_params.port, pwm0_params.pin, 0);
     }
 
 
     // compare the counter against the period value. On match -> {Drive PWM
     //     Pin HIGH, Reset the counter}
-    if (pwm0_params->counter >= 100)
+    if (pwm0_params.counter >= 100)
     {
-        digitalWrite(pwm0_params->port, pwm0_params->pin, 1);
-        pwm0_params->counter = 0;
+        digitalWrite(pwm0_params.port, pwm0_params.pin, 1);
+        pwm0_params.counter = 0;
 
     }
 }
@@ -116,7 +116,7 @@ void pwm_init (TIMER_TypeDef *  timer, pwm_paramaters_t* parameters)
     TIMER_TopSet(timer, top);
     
     /* Configure TIMER */
-    TIMER_Init(timer, &timerInit);
+//    TIMER_Init(timer, &timerInit);
 
 
 }
@@ -151,14 +151,14 @@ void pwm_stop (TIMER_TypeDef *  timer)
     if (timer == TIMER0)
     {
         /* Enable TIMER0 interrupt vector in NVIC */
-        digitalWrite(pwm0_params->port, pwm0_params->pin, 0);
+        digitalWrite(pwm0_params.port, pwm0_params.pin, 0);
         NVIC_DisableIRQ(TIMER0_IRQn);
     }
 
     if (timer == TIMER1)
     {
         /* Enable TIMER1 interrupt vector in NVIC */
-        digitalWrite(pwm1_params->port, pwm1_params->pin, 0);
+        digitalWrite(pwm1_params.port, pwm1_params.pin, 0);
         NVIC_DisableIRQ(TIMER1_IRQn);
     }
 }

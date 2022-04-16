@@ -99,6 +99,7 @@ src/main.o: ../src/main.c \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_sleeptimer_config.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/bsp_os.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/config_v3.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os_trace.h \
  C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\Sample\MicriumOSKernel/os_trace_events.h \
  C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/SEGGER_SYSVIEW.h \
@@ -218,6 +219,7 @@ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_sleeptimer_config.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/bsp_os.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/config_v3.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os_trace.h:
 C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\Sample\MicriumOSKernel/os_trace_events.h:
 C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/SEGGER_SYSVIEW.h:

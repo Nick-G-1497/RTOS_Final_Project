@@ -42,7 +42,7 @@ typedef struct{
 
 static pwm_paramaters_t pwm0_params =
 {
-    .frequency_HZ = 1000,
+    .frequency_HZ = 60,
     .duty_cycle_percent = 75,
     .timer_name = "PWM 0 Timer",
     .port = LED0_port,
@@ -53,7 +53,7 @@ static pwm_paramaters_t pwm0_params =
 
 static pwm_paramaters_t pwm1_params =
 {
-    .frequency_HZ = 1000,
+    .frequency_HZ = 60,
     .duty_cycle_percent = 75,
     .timer_name = "PWM 1 Timer",
     .port = LED1_port,

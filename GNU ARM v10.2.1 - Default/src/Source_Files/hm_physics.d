@@ -1,8 +1,13 @@
-src/Source_Files/app.o: ../src/Source_Files/app.c \
+src/Source_Files/hm_physics.o: ../src/Source_Files/hm_physics.c \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\toolchain\inc\sl_gcc_preinclude.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/blink.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/gpio.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/hm_physics.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/config_v3.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_def.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_path.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/rtos_description.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_opt_def.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\em_device.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b500f1024gl125.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\cmsis\include\core_cm4.h \
@@ -57,38 +62,20 @@ src/Source_Files/app.o: ../src/Source_Files/app.c \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_dmareq.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_af_ports.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_af_pins.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_bus.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_assert.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\SLSTK3402A_EFM32PG12\config/bspconfig.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\common\bsp/bsp_bcp.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/app.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_def.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_path.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/rtos_description.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_opt_def.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/cpu_cfg.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_def.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_port_sel.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\ports\source\gnu\armv7m_cpu_port.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h \
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_assert.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h \
+ C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_err.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_port_sel.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\lib_def.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\toolchains.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/rtos_err_cfg.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/cmu.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_cmu.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_cmu_compat.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_chip.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_system.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\lib_mem.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/common_cfg.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\lib_math.h \
@@ -102,37 +89,16 @@ src/Source_Files/app.o: ../src/Source_Files/app.c \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\ports\source\gnu\armv7m_os_cpu.h \
  c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\service\sleeptimer\inc\sl_sleeptimer.h \
  C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_sleeptimer_config.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/bsp_os.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/config_v3.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os_trace.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\Sample\MicriumOSKernel/os_trace_events.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/SEGGER_SYSVIEW.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/SEGGER.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/Global.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\Sample\MicriumOSKernel\Config/os_cfg_trace.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_emu.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/queue.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/pwm.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_system.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_timer.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/gpio.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/capsense.h \
- C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\SLSTK3402A_EFM32PG12\config/capsenseconfig.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/queue.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\glib\glib.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\glib\glib_color.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\dmd\dmd.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\em_types.h \
- c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\dmd\dmd.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/pwm.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/hm_physics.h \
- C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/shield_physics.h
+ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\toolchain\inc\sl_gcc_preinclude.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/blink.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/gpio.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/hm_physics.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/config_v3.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_def.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_path.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/rtos_description.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_opt_def.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\em_device.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b500f1024gl125.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\cmsis\include\core_cm4.h:
@@ -187,38 +153,20 @@ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_dmareq.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_af_ports.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\device\siliconlabs\efm32pg12b\include\efm32pg12b_af_pins.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_bus.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_assert.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\SLSTK3402A_EFM32PG12\config/bspconfig.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\common\bsp/bsp_bcp.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/app.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_def.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_path.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/rtos_description.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_opt_def.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/cpu_cfg.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_def.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_port_sel.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\ports\source\gnu\armv7m_cpu_port.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_core.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_common.h:
+c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_assert.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\autogen/sl_component_catalog.h:
+C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/emlib_core_debug_config.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\rtos_err.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu_port_sel.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\lib_def.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\toolchains.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/rtos_err_cfg.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/cmu.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_cmu.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_cmu_compat.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_gpio.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_chip.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_system.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\cpu\include\cpu.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\lib_mem.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/common_cfg.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\common\include\lib_math.h:
@@ -233,29 +181,3 @@ c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\service\sleeptimer\inc\sl_sleeptimer.h:
 C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\config/sl_sleeptimer_config.h:
 c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\common\inc\sl_status.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/bsp_os.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/config_v3.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os_trace.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\Sample\MicriumOSKernel/os_trace_events.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/SEGGER_SYSVIEW.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/SEGGER.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\SEGGER/Global.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\util\third_party\segger\systemview\Sample\MicriumOSKernel\Config/os_cfg_trace.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\micrium_os\kernel\include\os.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_emu.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/queue.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/pwm.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_system.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\emlib\inc\em_timer.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/gpio.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/capsense.h:
-C\:\SiliconLabs\SimplicityStudio\v5\developer\sdks\gecko_sdk_suite\v3.2\hardware\kit\SLSTK3402A_EFM32PG12\config/capsenseconfig.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/queue.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\glib\glib.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\glib\glib_color.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\dmd\dmd.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\em_types.h:
-c\:\siliconlabs\simplicitystudio\v5\developer\sdks\gecko_sdk_suite\v3.2\platform\middleware\glib\dmd\dmd.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/pwm.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/hm_physics.h:
-C\:\Users\nickg\SimplicityStudio\v5_workspace\RTOS_Final_Project\src\Header_Files/shield_physics.h:
