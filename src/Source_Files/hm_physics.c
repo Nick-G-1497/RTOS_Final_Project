@@ -81,7 +81,7 @@ void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* stat
 
             // update the velocity
             state->y_cm = state->min_y_cm;
-            state->v.yvel = - sqrtf( new_velocity_squared - pow(state->v.xvel,2) );
+            state->v.yvel = sqrtf( new_velocity_squared - pow(state->v.xvel,2) );
 
             // TODO map y_cm to y_pixel_value
         }

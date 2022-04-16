@@ -481,7 +481,7 @@ void app_init(void)
 
   GameConfigurations_v3_t ConfigData = {
        .version = 3,
-       .tauPhysics = 20,
+       .tauPhysics = 10,
        .tauLCD = 30,
        .gravity = -980,
        .canyonSize = 1000,
@@ -544,6 +544,8 @@ void app_init(void)
 
           .max_y_cm = (128/118) * config.canyonSize,
           .min_y_cm = 0,
+
+          .mass = 5,
 
           .numMasses = 5
       };
