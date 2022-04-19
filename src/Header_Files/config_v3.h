@@ -7,9 +7,18 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "os.h"
+
 
 #ifndef SRC_HEADER_FILES_CONFIG_3_H_
 #define SRC_HEADER_FILES_CONFIG_3_H_
+
+
+typedef struct BoostTiming_t
+{
+  OS_TICK  mostRecentPressTime;
+  OS_TICK  mostRecentBoostActivationTime;
+}BoostTiming_t;
 
 
 /**

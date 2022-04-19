@@ -32,6 +32,7 @@
 #include "pwm.h"
 
 
+
 /********************************************************************************
  * Macro Expressions
  ********************************************************************************/
@@ -128,8 +129,8 @@ static OS_SEM slider_semaphore;
 static OS_SEM LCD_semaphore;
 static OS_SEM shield_physics_semaphore;
 static OS_SEM hm_physics_semaphore;
-
-
+static OS_SEM laser_semaphore;
+static OS_SEM boost_deactivate_semaphore;
 
 
 
@@ -154,6 +155,7 @@ static OS_MUTEX shield_mux;
 //static OS_TMR PWM1_timer;
 static OS_TMR slider_timer;
 static OS_TMR LCD_timer;
+static OS_TMR boost_timer;
 
 
 /**
@@ -183,7 +185,7 @@ void task_init(void);
 void lcd_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
 void slider_state_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
 void shield_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
-
+void boost_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
 void hm_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg);
 
 #endif  // APP_H

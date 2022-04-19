@@ -116,7 +116,7 @@ void pwm_init (TIMER_TypeDef *  timer, pwm_paramaters_t* parameters)
     TIMER_TopSet(timer, top);
     
     /* Configure TIMER */
-//    TIMER_Init(timer, &timerInit);
+    // TIMER_Init(timer, &timerInit);
 
 
 }

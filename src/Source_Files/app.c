@@ -169,7 +169,7 @@ static GLIB_Context_t glibContext;
 ShieldPosition_t shield_position;
 Harkonnen_Mass_Position_t hm_position;
 GameConfigurations_v3_t config;
-
+BoostTiming_t boostTime;
 
 
 /*******************************************************************************
@@ -245,7 +245,9 @@ static void Idle(void* random_arguement_parameter);
  *   Interrupt handler to service pressing of buttons
  ******************************************************************************/
 void GPIO_EVEN_IRQHandler(void){
+  RTOS_ERR err;
 
+  boostTime.mostRecentPressTime = OSTimeGet(&err);
 
   GPIO_IntClear(1 << BUTTON0_pin);
 
@@ -258,9 +260,7 @@ void GPIO_EVEN_IRQHandler(void){
 void GPIO_ODD_IRQHandler(void){
 //TODO///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   RTOS_ERR err;
-
-
-
+  OSSemPost(&laser_semaphore, OS_OPT_POST_ALL, &err);
   GPIO_IntClear(1 << BUTTON1_pin);
 
 }
@@ -294,20 +294,20 @@ void task_init ()
           &err);
     EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-//    OSTaskCreate(&LCDDisplay_TCB, /* Create the start task */
-//          "LCD Task",
-//          LCD_Display,
-//          DEF_NULL,
-//          LCD_DISPLAY_PRIORITY,
-//          &LCDDisplay_TaskStack[0],
-//          (TASK_STK_SIZE / 10),
-//          TASK_STK_SIZE,
-//          0u,
-//          0u,
-//          DEF_NULL,
-//          (OS_OPT_TASK_STK_CLR),
-//          &err);
-//    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+    OSTaskCreate(&LaserTask_TCB, /* Create the start task */
+          "Laser Task",
+          LaserTask,
+          DEF_NULL,
+          LASER_TASK_PRIORITY,
+          &Laser_TaskStack[0],
+          (TASK_STK_SIZE / 10),
+          TASK_STK_SIZE,
+          0u,
+          0u,
+          DEF_NULL,
+          (OS_OPT_TASK_STK_CLR),
+          &err);
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
     OSTaskCreate(&ShieldPhysics_TCB, /* Create the start task */
           "Shield Physics",
@@ -354,20 +354,20 @@ void task_init ()
       &err);
     EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-//    OSTaskCreate(&DesiredShieldForce_TCB, /* Create the start task */
-//          "Desired Force Task",
-//          DesiredShieldForceTask,
-//          DEF_NULL,
-//          DESIRED_SHIELD_FORCE_PRIORITY,
-//          &DesiredShieldForce_TaskStack[0],
-//          (TASK_STK_SIZE / 10),
-//          TASK_STK_SIZE,
-//          0u,
-//          0u,
-//          DEF_NULL,
-//          (OS_OPT_TASK_STK_CLR),
-//          &err);
-//        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+    OSTaskCreate(&DesiredShieldForce_TCB, /* Create the start task */
+          "Desired Force Task",
+          DesiredShieldForceTask,
+          DEF_NULL,
+          DESIRED_SHIELD_FORCE_PRIORITY,
+          &DesiredShieldForce_TaskStack[0],
+          (TASK_STK_SIZE / 10),
+          TASK_STK_SIZE,
+          0u,
+          0u,
+          DEF_NULL,
+          (OS_OPT_TASK_STK_CLR),
+          &err);
+        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 }
 
@@ -469,6 +469,28 @@ void os_object_init (void)
                            &err);
         EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
+    OSTmrCreate(&boost_timer,
+                           "Boost Timer",
+                           2,
+                           (int) config.shieldConfig.boostConfig.armingWindowBeforeImpact/10,
+                           OS_OPT_TMR_ONE_SHOT,
+                           boost_timer_callback_function,
+                           (void*) 0,
+                           &err);
+        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+
+    OSSemCreate (&laser_semaphore,
+                   "Laser Semaphore",
+                   0,
+                   &err);
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+    OSSemCreate (&boost_deactivate_semaphore,
+                       "Boost De-activation Semaphore",
+                       0,
+                       &err);
+        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 }
 
@@ -624,6 +646,54 @@ static void HM_Physics_Task (void* random_arguement_parameter)
 
 
     }
+}
+
+
+static void LaserTask(void* random_arguement_parameter)
+{
+  RTOS_ERR err;
+
+  PP_UNUSED_PARAM(random_arguement_parameter);
+
+  uint8_t num_laser_activations = config.laserConfig.numActivations;
+
+  while (1)
+  {
+
+    OSSemPend(&laser_semaphore,
+                          100,
+                          OS_OPT_PEND_BLOCKING,
+                          NULL,
+                          &err);
+    if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
+    {
+        if (num_laser_activations > 0)
+        {
+          num_laser_activations --;
+
+          OSMutexPend (&HM_mux,
+                                  100,
+                                  OS_OPT_PEND_BLOCKING,
+                                  NULL,
+                                  &err);
+          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
+          {
+
+
+              hm_position.x_cm = config.holtzmanMassesConfig.initialHorizontalPosition;
+              hm_position.y_cm = hm_position.max_y_cm - 20;
+              hm_position.v = config.holtzmanMassesConfig.initialVelocity;
+              hm_position.numMasses --;
+
+              OSMutexPost(&HM_mux,
+                          OS_OPT_POST_NONE,
+                          &err);
+          }
+
+        }
+
+    }
+  }
 }
 
 
@@ -916,6 +986,67 @@ static void LCD_Display(void* random_arguement_parameter)
   }
 }
 
+
+static void BoostTask(void* random_arguement_parameter)
+{
+  RTOS_ERR err;
+  PP_UNUSED_PARAM(random_arguement_parameter);
+
+
+  while (1)
+  {
+      if (boostTime.mostRecentPressTime > boostTime.mostRecentBoostActivationTime + config.shieldConfig.boostConfig.armingWindowBeforeImpact + config.shieldConfig.boostConfig.rechargeTimeAfterDisarm)
+      {
+          boostTime.mostRecentBoostActivationTime = boostTime.mostRecentPressTime;
+
+          OSMutexPend (&shield_mux,
+                        100,
+                        OS_OPT_PEND_BLOCKING,
+                        NULL,
+                        &err);
+          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
+          {
+              shield_position.isBoosted = true;
+
+              // start OS timer to set isBoosted to false
+              OSTmrStart(&boost_timer, &err);
+
+
+              OSMutexPost(&shield_mux,
+                                  OS_OPT_POST_NONE,
+                                  &err);
+          }
+
+      }
+      OSSemPend(&boost_deactivate_semaphore,
+                100,
+                OS_OPT_PEND_NON_BLOCKING,
+                NULL,
+                &err);
+      // if the semaphore pend didn't time out
+      if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
+      {
+          OSMutexPend (&shield_mux,
+                           100,
+                           OS_OPT_PEND_BLOCKING,
+                           NULL,
+                           &err);
+          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
+             {
+                 shield_position.isBoosted = false;
+
+                 OSMutexPost(&shield_mux,
+                                     OS_OPT_POST_NONE,
+                                     &err);
+             }
+      }
+
+
+
+  }
+}
+
+
 static void DesiredShieldForceTask(void* random_arguement_parameter)
 {
   RTOS_ERR err;
@@ -984,5 +1115,13 @@ void hm_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg)
   OSSemPost(&hm_physics_semaphore, OS_OPT_POST_ALL, &err);
 }
 
+
+void boost_timer_callback_function(OS_TMR* p_tmr, void* p_arg)
+{
+  PP_UNUSED_PARAM(p_arg);
+  PP_UNUSED_PARAM(p_tmr);
+  RTOS_ERR err;
+  OSSemPost(&boost_deactivate_semaphore, OS_OPT_POST_ALL, &err);
+}
 
 
