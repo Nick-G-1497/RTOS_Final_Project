@@ -81,7 +81,7 @@
                                 								
                                 <option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.builtin.1123947853" name="Always branch to builtin functions (-fno-builtin)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.debug.builtin" useByScannerDiscovery="false" value="true" valueType="boolean"/>
                                 								
-                                <option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.level.1364828483" name="Optimization Level" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.level" useByScannerDiscovery="false" value="gnu.c.optimization.level.size" valueType="enumerated"/>
+                                <option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.level.1364828483" name="Optimization Level" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.level" useByScannerDiscovery="false" value="gnu.c.optimization.level.none" valueType="enumerated"/>
                                 								
                                 <option id="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.datasect.1841256166" name="Place each data item into its own section (-fdata-sections)" superClass="com.silabs.ide.si32.gcc.cdt.managedbuild.tool.gnu.c.compiler.optimization.datasect" useByScannerDiscovery="false" value="true" valueType="boolean"/>
                                 								
@@ -372,6 +372,12 @@
                                     <listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="m"/>
                                     									
                                     <listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="nosys"/>
+                                    								
+                                </option>
+                                								
+                                <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.c.link.option.paths.51780937" name="Library search path (-L)" superClass="gnu.c.link.option.paths" useByScannerDiscovery="false" valueType="libPaths">
+                                    									
+                                    <listOptionValue builtIn="false" value="math.h"/>
                                     								
                                 </option>
                                 								

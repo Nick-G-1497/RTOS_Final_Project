@@ -223,12 +223,12 @@ static void DesiredShieldForceTask(void* random_arguement_parameter);
 static void HM_Physics_Task (void* random_arguement_parameter);
 
 
-/**
- * Task declaration for task responsible for updating the shield physics
- * @param random_arguement_parameter
- */
-static void ShieldPhysics_Task (void* random_arguement_parameter);
-
+///**
+// * Task declaration for task responsible for updating the shield physics
+// * @param random_arguement_parameter
+// */
+//static void ShieldPhysics_Task (void* random_arguement_parameter);
+//
 
 /**
  * Task declaration function for lower priority task intended to save
@@ -236,7 +236,7 @@ static void ShieldPhysics_Task (void* random_arguement_parameter);
  * @param random_arguement_parameter : void* pointer which is needed for
  * conforming to u-os syntax standards
  */
-static void Idle(void* random_arguement_parameter);
+//static void Idle(void* random_arguement_parameter);
 
 
 
@@ -245,11 +245,12 @@ static void Idle(void* random_arguement_parameter);
  *   Interrupt handler to service pressing of buttons
  ******************************************************************************/
 void GPIO_EVEN_IRQHandler(void){
+  GPIO_IntClear(1 << BUTTON0_pin);
   RTOS_ERR err;
 
   boostTime.mostRecentPressTime = OSTimeGet(&err);
 
-  GPIO_IntClear(1 << BUTTON0_pin);
+
 
 }
 
@@ -258,11 +259,10 @@ void GPIO_EVEN_IRQHandler(void){
  *   Interrupt handler to service pressing of buttons
  ******************************************************************************/
 void GPIO_ODD_IRQHandler(void){
+  GPIO_IntClear(1 << BUTTON1_pin);
 //TODO///////////////////////////////////////////////////////////////////////////////////////////////////////////////
   RTOS_ERR err;
   OSSemPost(&laser_semaphore, OS_OPT_POST_ALL, &err);
-  GPIO_IntClear(1 << BUTTON1_pin);
-
 }
 
 
@@ -309,12 +309,12 @@ void task_init ()
           &err);
     EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-    OSTaskCreate(&ShieldPhysics_TCB, /* Create the start task */
-          "Shield Physics",
-          ShieldPhysics_Task,
+    OSTaskCreate(&BoostTask_TCB, /* Create the start task */
+          "Boost Task",
+          BoostTask,
           DEF_NULL,
-          SHIELD_PHYSICS_PRIORITY,
-          &ShieldPhysics_TaskStack[0],
+          BOOST_TASK_PRIORITY,
+          &Boost_TaskStack[0],
           (TASK_STK_SIZE / 10),
           TASK_STK_SIZE,
           0u,
@@ -354,20 +354,20 @@ void task_init ()
       &err);
     EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-    OSTaskCreate(&DesiredShieldForce_TCB, /* Create the start task */
-          "Desired Force Task",
-          DesiredShieldForceTask,
-          DEF_NULL,
-          DESIRED_SHIELD_FORCE_PRIORITY,
-          &DesiredShieldForce_TaskStack[0],
-          (TASK_STK_SIZE / 10),
-          TASK_STK_SIZE,
-          0u,
-          0u,
-          DEF_NULL,
-          (OS_OPT_TASK_STK_CLR),
-          &err);
-        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//    OSTaskCreate(&DesiredShieldForce_TCB, /* Create the start task */
+//          "Desired Force Task",
+//          DesiredShieldForceTask,
+//          DEF_NULL,
+//          DESIRED_SHIELD_FORCE_PRIORITY,
+//          &DesiredShieldForce_TaskStack[0],
+//          (TASK_STK_SIZE / 10),
+//          TASK_STK_SIZE,
+//          0u,
+//          0u,
+//          DEF_NULL,
+//          (OS_OPT_TASK_STK_CLR),
+//          &err);
+//        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 }
 
@@ -402,7 +402,7 @@ void os_object_init (void)
 
   OSTmrCreate(&hm_physics_timer,
                       "Harkonnen Mass Physics Update Timer",
-                      2,
+                      20,
                       (int) config.tauPhysics/10,
                       OS_OPT_TMR_PERIODIC,
                       hm_physics_timer_callback_function,
@@ -411,21 +411,21 @@ void os_object_init (void)
    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 
-   OSSemCreate (&shield_physics_semaphore,
-                  "Shield Physics Update Semaphore",
-                  0,
-                  &err);
-   EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-
-   OSTmrCreate(&shield_physics_timer,
-                       "Shield Physics Update Timer",
-                       2,
-                       (int) config.tauPhysics/10,
-                       OS_OPT_TMR_PERIODIC,
-                       shield_physics_timer_callback_function,
-                       (void*) 0,
-                       &err);
-    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//   OSSemCreate (&shield_physics_semaphore,
+//                  "Shield Physics Update Semaphore",
+//                  0,
+//                  &err);
+//   EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//
+//   OSTmrCreate(&shield_physics_timer,
+//                       "Shield Physics Update Timer",
+//                       2,
+//                       (int) config.tauPhysics/10,
+//                       OS_OPT_TMR_PERIODIC,
+//                       shield_physics_timer_callback_function,
+//                       (void*) 0,
+//                       &err);
+//    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
     OSSemCreate (&slider_semaphore,
                    "Slider State Semaphore",
@@ -436,13 +436,13 @@ void os_object_init (void)
 
     OSTmrCreate(&slider_timer,
                            "Slider State Timer",
-                           2,
+                           20,
                            (int) config.tauPhysics/10,
                            OS_OPT_TMR_PERIODIC,
                            slider_state_timer_callback_function,
                            (void*) 0,
                            &err);
-        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
     OSSemCreate (&slider_semaphore,
                    "Slider State Semaphore",
@@ -461,7 +461,7 @@ void os_object_init (void)
 
     OSTmrCreate(&LCD_timer,
                            "LCD Timer",
-                           2,
+                           20,
                            (int) config.tauLCD/10,
                            OS_OPT_TMR_PERIODIC,
                            lcd_timer_callback_function,
@@ -471,13 +471,13 @@ void os_object_init (void)
 
     OSTmrCreate(&boost_timer,
                            "Boost Timer",
-                           2,
                            (int) config.shieldConfig.boostConfig.armingWindowBeforeImpact/10,
+                           2,
                            OS_OPT_TMR_ONE_SHOT,
                            boost_timer_callback_function,
                            (void*) 0,
                            &err);
-        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 
     OSSemCreate (&laser_semaphore,
@@ -490,8 +490,13 @@ void os_object_init (void)
                        "Boost De-activation Semaphore",
                        0,
                        &err);
-        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
+    OSFlagCreate (&game_over_flags,
+                        "End Game Flags",
+                        0x00,
+                        &err);
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 }
 
 
@@ -504,17 +509,17 @@ void app_init(void)
   GameConfigurations_v3_t ConfigData = {
        .version = 3,
        .tauPhysics = 10,
-       .tauLCD = 30,
+       .tauLCD = 10,
        .gravity = -980,
        .canyonSize = 1000,
        .holtzmanMassesConfig =
        {
           .num =  3,
-          .displayDiameter = 20,
+          .displayDiameter = 60,
           .initialConditions = 0,
           .initialVelocity =
           {
-              .xvel = 0,
+              .xvel = 1500,
               .yvel = 0
           },
           .initialHorizontalPosition = 0,
@@ -534,6 +539,7 @@ void app_init(void)
        },
        .shieldConfig =
        {
+           .minimumEffectivePerpendicularSpeed = 3000,
            .exclusivelyPassiveBounceKineticEnergyReduction = 10,
            .boostConfig =
            {
@@ -561,8 +567,8 @@ void app_init(void)
               .yvel = 0
           },
 
-          .max_x_cm = config.canyonSize/2,
-          .min_x_cm = -config.canyonSize/2,
+          .max_x_cm = config.canyonSize/2 - (config.holtzmanMassesConfig.displayDiameter/2),
+          .min_x_cm = -config.canyonSize/2 + (config.holtzmanMassesConfig.displayDiameter/2),
 
           .max_y_cm = (128/118) * config.canyonSize,
           .min_y_cm = 0,
@@ -587,6 +593,8 @@ void app_init(void)
       .mass = 5
   };
 
+
+
   shield_position = temp_shield;
 
 
@@ -600,7 +608,9 @@ static void HM_Physics_Task (void* random_arguement_parameter)
   // pend on a semaphore
 
   OSTmrStart(&hm_physics_timer, &err);
-    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+  EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+
   while (1)
     {
       // Pend on the semaphore
@@ -620,27 +630,28 @@ static void HM_Physics_Task (void* random_arguement_parameter)
                         OS_OPT_PEND_BLOCKING,
                         NULL,
                         &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-          {
-              // mutex locks on the shield_position and hm_position
-              OSMutexPend (&shield_mux,
-                           100,
-                           OS_OPT_PEND_BLOCKING,
-                           NULL,
-                           &err);
-              if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-              {
-                    update_hm_physics ( &shield_position,
-                                        &hm_position,
-                                        &config);
-                    OSMutexPost(&shield_mux,
-                                OS_OPT_POST_NONE,
-                                &err);
-              }
-              OSMutexPost(&HM_mux,
-                          OS_OPT_POST_NONE,
-                          &err);
-          }
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
+          // mutex locks on the shield_position and hm_position
+          OSMutexPend (&shield_mux,
+                       100,
+                       OS_OPT_PEND_BLOCKING,
+                       NULL,
+                       &err);
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
+            update_hm_physics ( &shield_position,
+                              &hm_position,
+                              &config,
+                              &game_over_flags);
+          OSMutexPost(&shield_mux,
+                      OS_OPT_POST_NONE,
+                      &err);
+
+          OSMutexPost(&HM_mux,
+                      OS_OPT_POST_NONE,
+                      &err);
+
 
       }
 
@@ -676,19 +687,18 @@ static void LaserTask(void* random_arguement_parameter)
                                   OS_OPT_PEND_BLOCKING,
                                   NULL,
                                   &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-          {
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
 
-              hm_position.x_cm = config.holtzmanMassesConfig.initialHorizontalPosition;
-              hm_position.y_cm = hm_position.max_y_cm - 20;
-              hm_position.v = config.holtzmanMassesConfig.initialVelocity;
-              hm_position.numMasses --;
+          hm_position.x_cm = config.holtzmanMassesConfig.initialHorizontalPosition;
+          hm_position.y_cm = hm_position.max_y_cm - 20;
+          hm_position.v = config.holtzmanMassesConfig.initialVelocity;
+          hm_position.numMasses --;
 
-              OSMutexPost(&HM_mux,
-                          OS_OPT_POST_NONE,
-                          &err);
-          }
+          OSMutexPost(&HM_mux,
+                      OS_OPT_POST_NONE,
+                      &err);
+
 
         }
 
@@ -758,17 +768,16 @@ static void SliderStateTask(void* random_arguement_parameter)
                       OS_OPT_PEND_BLOCKING,
                       NULL,
                       &err);
-        if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-        {
+        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 
-            shield_position.current_force = force;
+        shield_position.current_force = force;
 
-            OSMutexPost(&shield_mux,
-                        OS_OPT_POST_NONE,
-                        &err);
+        OSMutexPost(&shield_mux,
+                    OS_OPT_POST_NONE,
+                    &err);
 
-        }
+
       }
 
   }
@@ -778,47 +787,46 @@ static void SliderStateTask(void* random_arguement_parameter)
 }
 
 
-static void ShieldPhysics_Task (void* random_arguement_parameter)
-{
-
-  RTOS_ERR err;
-  // pend on a semaphore
-
-
-
-  OSTmrStart(&shield_physics_timer, &err);
-  EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-
-
-  while (1)
-    {
-      // Pend on the semaphore
-      OSSemPend(&shield_physics_semaphore,
-                100,
-                OS_OPT_PEND_BLOCKING,
-                NULL,
-                &err);
-      // if the semaphore pend didn't time out
-      if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-      {
-
-          // mutex locks on the shield_position and hm_position
-          OSMutexPend (&shield_mux,
-                                                      100,
-                                                      OS_OPT_PEND_BLOCKING,
-                                                      NULL,
-                                                      &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-          {
-              update_shield_physics ( &shield_position, &config );
-              OSMutexPost(&shield_mux,
-                                  OS_OPT_POST_NONE,
-                                  &err);
-          }
-      }
-
-    }
-}
+//static void ShieldPhysics_Task (void* random_arguement_parameter)
+//{
+//
+//  RTOS_ERR err;
+//  // pend on a semaphore
+//
+//
+//
+//  OSTmrStart(&shield_physics_timer, &err);
+//  EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//
+//
+//  while (1)
+//    {
+//      // Pend on the semaphore
+//      OSSemPend(&shield_physics_semaphore,
+//                100,
+//                OS_OPT_PEND_BLOCKING,
+//                NULL,
+//                &err);
+//      // if the semaphore pend didn't time out
+//      if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
+//      {
+//
+//          // mutex locks on the shield_position and hm_position
+////          OSMutexPend (&shield_mux,
+////                                                      100,
+////                                                      OS_OPT_PEND_BLOCKING,
+////                                                      NULL,
+////                                                      &err);
+////          EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//          // update_shield_physics ( &shield_position, &config );
+////          OSMutexPost(&shield_mux,
+////                              OS_OPT_POST_NONE,
+////                              &err);
+//
+//      }
+//
+//    }
+//}
 
 
 
@@ -869,7 +877,9 @@ static void LCD_Display(void* random_arguement_parameter)
 
     uint8_t shield_position_center_pixel;
 
-    // float radius = config.holtzmanMassesConfig.displayDiameter/cm_per_pixel/2;
+    float radius = config.holtzmanMassesConfig.displayDiameter/cm_per_pixel/2;
+
+    OS_FLAGS game_over;
 
 
     OSTmrStart(&LCD_timer, &err);
@@ -879,6 +889,7 @@ static void LCD_Display(void* random_arguement_parameter)
 
   while(1){
 
+//      OSTimeDly(10, OS_OPT_TIME_DLY, &err);
 
       OSSemPend(&LCD_semaphore,
                       100,
@@ -889,24 +900,147 @@ static void LCD_Display(void* random_arguement_parameter)
       {
 
 
+
+          game_over =  OSFlagPend (&game_over_flags,
+                                missed_platform | fell_thru_platform | winner_winner,
+                                1,
+                                OS_OPT_PEND_FLAG_SET_ANY + OS_OPT_PEND_FLAG_CONSUME + OS_OPT_PEND_NON_BLOCKING,
+                                (CPU_TS *)0,
+                                &err);
+         if (game_over != 0x00)
+         {
+             if (game_over == missed_platform)
+             {
+                 glibContext.backgroundColor = White;
+                 glibContext.foregroundColor = Black;
+
+                 GLIB_clear(&glibContext);
+                 GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
+                 // write that you missed the platform
+
+                 GLIB_drawStringOnLine(&glibContext,
+                                         "GAME OVER",
+                                         5,
+                                         GLIB_ALIGN_LEFT,
+                                         5,
+                                         5,
+                                         false);
+                 GLIB_drawStringOnLine(&glibContext,
+                                      "Your shield failed",
+                                      6,
+                                      GLIB_ALIGN_LEFT,
+                                      5,
+                                      5,
+                                      false);
+                 GLIB_drawStringOnLine(&glibContext,
+                                       "to protect your",
+                                       7,
+                                       GLIB_ALIGN_LEFT,
+                                       5,
+                                       5,
+                                       false);
+                 GLIB_drawStringOnLine(&glibContext,
+                                      "base",
+                                      8,
+                                      GLIB_ALIGN_LEFT,
+                                      5,
+                                      5,
+                                      false);
+                 DMD_updateDisplay();
+
+                 while (1)
+                   {}
+
+
+
+             }
+             if (game_over == fell_thru_platform)
+             {
+                 glibContext.backgroundColor = White;
+                 glibContext.foregroundColor = Black;
+                 GLIB_clear(&glibContext);
+                 GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
+
+                 GLIB_drawStringOnLine(&glibContext,
+                                         "GAME OVER",
+                                         5,
+                                         GLIB_ALIGN_LEFT,
+                                         5,
+                                         5,
+                                         false);
+                 GLIB_drawStringOnLine(&glibContext,
+                                      "Your shield was",
+                                      6,
+                                      GLIB_ALIGN_LEFT,
+                                      5,
+                                      5,
+                                      false);
+                 GLIB_drawStringOnLine(&glibContext,
+                                       "penetrated",
+                                       7,
+                                       GLIB_ALIGN_LEFT,
+                                       5,
+                                       5,
+                                       false);
+
+                 DMD_updateDisplay();
+
+                 while (1)
+                   {}
+             }
+             if (game_over == winner_winner)
+             {
+                 glibContext.backgroundColor = White;
+                 glibContext.foregroundColor = Black;
+                 GLIB_clear(&glibContext);
+                 GLIB_setFont(&glibContext, (GLIB_Font_t *) &GLIB_FontNarrow6x8);
+                 GLIB_drawStringOnLine(&glibContext,
+                                         "YOU WIN",
+                                         5,
+                                         GLIB_ALIGN_LEFT,
+                                         5,
+                                         5,
+                                         true);
+                 GLIB_drawStringOnLine(&glibContext,
+                                         "The Harkonnens",
+                                         6,
+                                         GLIB_ALIGN_LEFT,
+                                         5,
+                                         5,
+                                         true);
+                 GLIB_drawStringOnLine(&glibContext,
+                                  "are retreating",
+                                  7,
+                                  GLIB_ALIGN_LEFT,
+                                  5,
+                                  5,
+                                  true);
+                 DMD_updateDisplay();
+
+                 while (1)
+                   {}
+
+             }
+
+         }
+
           // Get the position of the HM
 
 
           // Get the position of the shield
 
           // mutex locks on the shield_position and hm_position
-          OSMutexPend (&shield_mux,
-                        100,
-                        OS_OPT_PEND_BLOCKING,
-                        NULL,
-                        &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-          {
-              shield_position_center_pixel = (uint8_t) ( (shield_position.x_cm/cm_per_pixel) + 64);
-              OSMutexPost(&shield_mux,
-                                  OS_OPT_POST_NONE,
-                                  &err);
-          }
+//          OSMutexPend (&shield_mux,
+//                        100,
+//                        OS_OPT_PEND_BLOCKING,
+//                        NULL,
+//                        &err);
+//          EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+          shield_position_center_pixel = (uint8_t) ( (shield_position.x_cm/cm_per_pixel) + 64);
+//          OSMutexPost(&shield_mux,
+//                              OS_OPT_POST_NONE,
+//                              &err);
+
 
 
           shield.xMin = shield_position_center_pixel - (config.platformConfig.length/cm_per_pixel/2);
@@ -915,48 +1049,47 @@ static void LCD_Display(void* random_arguement_parameter)
           shield.yMax = 127;
 
 
-          OSMutexPend (&HM_mux,
-                        100,
-                        OS_OPT_PEND_BLOCKING,
-                        NULL,
-                        &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-          {
-              hm_x =   (uint8_t) ( (hm_position.x_cm/cm_per_pixel) + 64);
-              hm_y =   (uint8_t) 127 - (hm_position.y_cm/height_scale_factor) ;
-              OSMutexPost(&HM_mux,
-                                  OS_OPT_POST_NONE,
-                                  &err);
-          }
+//          OSMutexPend (&HM_mux,
+//                        100,
+//                        OS_OPT_PEND_BLOCKING,
+//                        NULL,
+//                        &err);
+//          EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+          hm_x =   (uint8_t) ( (hm_position.x_cm/cm_per_pixel) + 64);
+          hm_y =   (uint8_t) 127 - (hm_position.y_cm/height_scale_factor) ;
+//          OSMutexPost(&HM_mux,
+//                              OS_OPT_POST_NONE,
+//                              &err);
 
-//
-//          // Update the polygon points of the
-//          ball_polyPoints[0] = (int32_t) (((float)hm_x + cos((90 * PI) / 180)) * radius);
-//          ball_polyPoints[1] = (int32_t) (((float)hm_y + sin((90* PI) / 180)) * radius);
-//          ball_polyPoints[2] = (int32_t) (((float)hm_x + cos((30* PI) / 180)) * radius);
-//          ball_polyPoints[3] = (int32_t) (((float)hm_y + sin((30* PI) / 180)) * radius);
-//          ball_polyPoints[4] = (int32_t) (((float)hm_x - cos((30* PI) / 180)) * radius);
-//          ball_polyPoints[5] = (int32_t) (((float)hm_y - sin((30* PI) / 180)) * radius);
-//          ball_polyPoints[6] = (int32_t) (((float)hm_x + cos((270* PI) / 180)) * radius);
-//          ball_polyPoints[7] = (int32_t) (((float)hm_y + sin((270* PI) / 180)) * radius);
-//          ball_polyPoints[8] = (int32_t) (((float)hm_x + cos((210* PI) / 180)) * radius);
-//          ball_polyPoints[9] = (int32_t) (((float)hm_y + sin((210* PI) / 180)) * radius);
-//          ball_polyPoints[10] = (int32_t) (((float)hm_x + cos((150* PI) / 180)) * radius);
-//          ball_polyPoints[11] = (int32_t) (((float)hm_y + sin((150* PI) / 180)) * radius);
-//
 
-          ball_polyPoints[0] = hm_x;
-          ball_polyPoints[1] = hm_y + 6;
-          ball_polyPoints[2] = hm_x + 5;
-          ball_polyPoints[3] = hm_y + 3;
-          ball_polyPoints[4] = hm_x + 5;
-          ball_polyPoints[5] = hm_y - 3;
-          ball_polyPoints[6] = hm_x;
-          ball_polyPoints[7] = hm_y - 6;
-          ball_polyPoints[8] = hm_x - 5;
-          ball_polyPoints[9] = hm_y - 3;
-          ball_polyPoints[10] = hm_x - 5;
-          ball_polyPoints[11] = hm_y + 3;
+
+          // Update the polygon points of the
+          ball_polyPoints[0] = (int32_t) ((float)hm_x + (cos((90 * PI) / 180)) * radius);
+          ball_polyPoints[1] = (int32_t) ((float)hm_y + (sin((90* PI) / 180)) * radius);
+          ball_polyPoints[2] = (int32_t) ((float)hm_x + (cos((30* PI) / 180)) * radius);
+          ball_polyPoints[3] = (int32_t) ((float)hm_y + (sin((30* PI) / 180)) * radius);
+          ball_polyPoints[4] = (int32_t) ((float)hm_x + (cos((330* PI) / 180)) * radius);
+          ball_polyPoints[5] = (int32_t) ((float)hm_y + (sin((330* PI) / 180)) * radius);
+          ball_polyPoints[6] = (int32_t) ((float)hm_x + (cos((270* PI) / 180)) * radius);
+          ball_polyPoints[7] = (int32_t) ((float)hm_y + (sin((270* PI) / 180)) * radius);
+          ball_polyPoints[8] = (int32_t) ((float)hm_x + (cos((210* PI) / 180)) * radius);
+          ball_polyPoints[9] = (int32_t) ((float)hm_y + (sin((210* PI) / 180)) * radius);
+          ball_polyPoints[10] = (int32_t) ((float)hm_x + (cos((150* PI) / 180)) * radius);
+          ball_polyPoints[11] = (int32_t) ((float)hm_y + (sin((150* PI) / 180)) * radius);
+
+
+//          ball_polyPoints[0] = hm_x;
+//          ball_polyPoints[1] = hm_y + 6;
+//          ball_polyPoints[2] = hm_x + 5;
+//          ball_polyPoints[3] = hm_y + 3;
+//          ball_polyPoints[4] = hm_x + 5;
+//          ball_polyPoints[5] = hm_y - 3;
+//          ball_polyPoints[6] = hm_x;
+//          ball_polyPoints[7] = hm_y - 6;
+//          ball_polyPoints[8] = hm_x - 5;
+//          ball_polyPoints[9] = hm_y - 3;
+//          ball_polyPoints[10] = hm_x - 5;
+//          ball_polyPoints[11] = hm_y + 3;
 
           /* Fill lcd with background color */
           GLIB_clear(&glibContext);
@@ -995,6 +1128,7 @@ static void BoostTask(void* random_arguement_parameter)
 
   while (1)
   {
+      OSTimeDly(5, OS_OPT_TIME_DLY, &err);
       if (boostTime.mostRecentPressTime > boostTime.mostRecentBoostActivationTime + config.shieldConfig.boostConfig.armingWindowBeforeImpact + config.shieldConfig.boostConfig.rechargeTimeAfterDisarm)
       {
           boostTime.mostRecentBoostActivationTime = boostTime.mostRecentPressTime;
@@ -1004,18 +1138,17 @@ static void BoostTask(void* random_arguement_parameter)
                         OS_OPT_PEND_BLOCKING,
                         NULL,
                         &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-          {
-              shield_position.isBoosted = true;
+          EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+          shield_position.isBoosted = true;
 
-              // start OS timer to set isBoosted to false
-              OSTmrStart(&boost_timer, &err);
+          // start OS timer to set isBoosted to false
+          OSTmrStart(&boost_timer, &err);
 
 
-              OSMutexPost(&shield_mux,
-                                  OS_OPT_POST_NONE,
-                                  &err);
-          }
+          OSMutexPost(&shield_mux,
+                              OS_OPT_POST_NONE,
+                              &err);
+
 
       }
       OSSemPend(&boost_deactivate_semaphore,
@@ -1031,14 +1164,13 @@ static void BoostTask(void* random_arguement_parameter)
                            OS_OPT_PEND_BLOCKING,
                            NULL,
                            &err);
-          if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
-             {
-                 shield_position.isBoosted = false;
+          EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+          shield_position.isBoosted = false;
+//
+          OSMutexPost(&shield_mux,
+                               OS_OPT_POST_NONE,
+                               &err);
 
-                 OSMutexPost(&shield_mux,
-                                     OS_OPT_POST_NONE,
-                                     &err);
-             }
       }
 
 
@@ -1047,36 +1179,36 @@ static void BoostTask(void* random_arguement_parameter)
 }
 
 
-static void DesiredShieldForceTask(void* random_arguement_parameter)
-{
-  RTOS_ERR err;
-  PP_UNUSED_PARAM(random_arguement_parameter);
-
-  pwm_init (PWM0_TIMER, &PWM0);
-  pwm_start(PWM0_TIMER);
-  while (1)
-    {
-      OSTimeDly(1, OS_OPT_TIME_DLY, &err);
-      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-    }
-
-}
+//static void DesiredShieldForceTask(void* random_arguement_parameter)
+//{
+//  RTOS_ERR err;
+//  PP_UNUSED_PARAM(random_arguement_parameter);
+//
+//  pwm_init (PWM0_TIMER, &PWM0);
+//  pwm_start(PWM0_TIMER);
+//  while (1)
+//    {
+//      OSTimeDly(100, OS_OPT_TIME_DLY, &err);
+//      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//    }
+//
+//}
 
 //
-static void Idle(void* random_arguement_parameter)
-{
-  RTOS_ERR err;
-
-  PP_UNUSED_PARAM(random_arguement_parameter);
-
-  while (1)
-    {
-      EMU_EnterEM1();
-      OSTimeDly(1, OS_OPT_TIME_DLY, &err);
-      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-    }
-
-}
+//static void Idle(void* random_arguement_parameter)
+//{
+//  RTOS_ERR err;
+//
+//  PP_UNUSED_PARAM(random_arguement_parameter);
+//
+//  while (1)
+//    {
+//      EMU_EnterEM1();
+//      OSTimeDly(100, OS_OPT_TIME_DLY, &err);
+//      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//    }
+//
+//}
 
 
 
@@ -1098,13 +1230,13 @@ void slider_state_timer_callback_function(OS_TMR* p_tmr, void* p_arg)
 }
 
 
-void shield_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg)
-{
-  PP_UNUSED_PARAM(p_arg);
-  PP_UNUSED_PARAM(p_tmr);
-  RTOS_ERR err;
-  OSSemPost(&shield_physics_semaphore, OS_OPT_POST_ALL, &err);
-}
+//void shield_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg)
+//{
+//  PP_UNUSED_PARAM(p_arg);
+//  PP_UNUSED_PARAM(p_tmr);
+//  RTOS_ERR err;
+//  OSSemPost(&shield_physics_semaphore, OS_OPT_POST_ALL, &err);
+//}
 
 
 void hm_physics_timer_callback_function(OS_TMR* p_tmr, void* p_arg)

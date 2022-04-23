@@ -50,7 +50,7 @@
 /**
  * Task Stack Size for
  */
-#define TASK_STK_SIZE 256
+#define TASK_STK_SIZE 1024
 
 /**
  * OS level priority of the boost task
@@ -65,12 +65,12 @@
 /**
  * OS level priority of the task dedicated to determining the slider state
  */
-#define SLIDER_STATE_TASK_PRIORITY 18
+#define SLIDER_STATE_TASK_PRIORITY 15
 
 /**
  * OS level priority to the task updating the Harkonnen Mass Physics
  */
-#define HM_PHYSICS_PRIORITY 18
+#define HM_PHYSICS_PRIORITY 16
 
 
 /**
@@ -127,7 +127,7 @@ void GPIO_ODD_IRQHandler(void);
  *****************************************************************************/
 static OS_SEM slider_semaphore;
 static OS_SEM LCD_semaphore;
-static OS_SEM shield_physics_semaphore;
+//static OS_SEM shield_physics_semaphore;
 static OS_SEM hm_physics_semaphore;
 static OS_SEM laser_semaphore;
 static OS_SEM boost_deactivate_semaphore;
@@ -156,6 +156,11 @@ static OS_MUTEX shield_mux;
 static OS_TMR slider_timer;
 static OS_TMR LCD_timer;
 static OS_TMR boost_timer;
+//static OS_TMR shield_physics_timer;
+static OS_TMR hm_physics_timer;
+
+
+static OS_FLAG_GRP game_over_flags;
 
 
 /**

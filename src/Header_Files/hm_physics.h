@@ -15,14 +15,17 @@
 
 
 
-static OS_TMR hm_physics_timer;
+extern OS_FLAGS missed_platform;
+extern OS_FLAGS fell_thru_platform;
+extern OS_FLAGS winner_winner;
+
 
 
 /**
  * @brief Update the mass' position
  *
  */
-void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* state, GameConfigurations_v3_t* config);
+void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* state, GameConfigurations_v3_t* config, OS_FLAG_GRP* game_over_flags);
 
 //
 ///**

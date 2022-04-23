@@ -39,13 +39,11 @@ void update_shield_physics(ShieldPosition_t* state, GameConfigurations_v3_t* con
         {
             state->velocity_x = -state->velocity_x;
             state->x_cm = state->max_x_cm;
-            return;
         }
         else
         {
             state->velocity_x = 0;
             state->x_cm = state->max_x_cm;
-            return;
         }
     }
 
@@ -56,13 +54,11 @@ void update_shield_physics(ShieldPosition_t* state, GameConfigurations_v3_t* con
         {
             state->velocity_x = -state->velocity_x;
             state->x_cm = state->min_x_cm;
-            return;
         }
         else
         {
             state->velocity_x = 0;
             state->x_cm = state->min_x_cm;
-            return;
         }
     }
 
@@ -70,7 +66,6 @@ void update_shield_physics(ShieldPosition_t* state, GameConfigurations_v3_t* con
     else
     {
         state->x_cm = predicted_x;
-        return;
     }
 }
 

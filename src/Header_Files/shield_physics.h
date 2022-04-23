@@ -13,7 +13,7 @@
 
 
 //static OS_SEM shield_physics_semaphore;
-static OS_TMR shield_physics_timer;
+
 
 void update_shield_physics (ShieldPosition_t* state, GameConfigurations_v3_t* config);
 

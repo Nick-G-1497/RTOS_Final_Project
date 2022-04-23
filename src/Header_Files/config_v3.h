@@ -106,6 +106,7 @@ typedef struct BoostConfig_t
 
 typedef struct HoltzmanShield_t
 {
+  float minimumEffectivePerpendicularSpeed;
   float exclusivelyPassiveBounceKineticEnergyReduction;
 
   BoostConfig_t boostConfig;

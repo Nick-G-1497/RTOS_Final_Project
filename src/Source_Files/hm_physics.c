@@ -7,17 +7,98 @@
 
 
 #include "hm_physics.h"
+#include "os.h"
 #include <math.h>
 
+OS_FLAGS missed_platform = 0x01;
+OS_FLAGS fell_thru_platform = 0x02;
+OS_FLAGS winner_winner = 0x04;
+
+void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* state, GameConfigurations_v3_t* config, OS_FLAG_GRP* game_over_flags){
 
 
-void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* state, GameConfigurations_v3_t* config){
+  /******************************************************************************
+     * Calculate Acceleration
+     ******************************************************************************/
+    float F = shield->current_force;
+    float m = shield->mass;
+    shield->acceleration_x = (F/m) * 100 ; // [ cm / s**2 ]
+
+
+    /*******************************************************************************
+     * Calculate Velocity
+     ******************************************************************************/
+    shield->velocity_x = shield->velocity_x + (shield->acceleration_x * config->tauPhysics/1000);
+
+
+
+    /*******************************************************************************
+     * Calculate Position
+     ******************************************************************************/
+    float predicted_x = shield->x_cm + shield->velocity_x * ((float) config->tauPhysics /1000);
+
+    // If the shield is going to bounce off the right wall
+    if ( (predicted_x >= shield->max_x_cm) )
+    {
+        if (config->platformConfig.cw_bounce.enabled == true)
+        {
+            shield->velocity_x = -shield->velocity_x;
+            shield->x_cm = shield->max_x_cm;
+        }
+        else
+        {
+            shield->velocity_x = 0;
+            shield->x_cm = shield->max_x_cm;
+        }
+    }
+
+    // Else if the shield is going to bounce off the left wall
+    else if ( (predicted_x <= shield->min_x_cm) )
+    {
+        if (config->platformConfig.cw_bounce.enabled == true )
+        {
+            shield->velocity_x = -shield->velocity_x;
+            shield->x_cm = shield->min_x_cm;
+        }
+        else
+        {
+            shield->velocity_x = 0;
+            shield->x_cm = shield->min_x_cm;
+        }
+    }
+
+    // Otherwise the shield is unimpeded
+    else
+    {
+        shield->x_cm = predicted_x;
+    }
+
+
+
+
+
+
+
+
+
+
 
     /**********************************************************************************************************
      * Horizontal  axis
      **********************************************************************************************************/
+
+    if (state->numMasses <= 0)
+    {
+      RTOS_ERR err;
+      OSFlagPost (game_over_flags,
+                  winner_winner,
+                  OS_OPT_POST_FLAG_SET,
+                  &err);
+      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));;
+    }
+
     // Calculate the position that the HM would be if it continued it's current trajectory
-    float updated_x = state->x_cm + state->v.xvel * (config->tauPhysics / 1000);
+    float updated_x = state->x_cm + state->v.xvel * ((float) config->tauPhysics / 1000);
 
     // If the HM does not come in contact with either of the walls
     if ( (updated_x < state->max_x_cm) && (updated_x > state->min_x_cm) )
@@ -60,6 +141,16 @@ void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* stat
         if ( ( state-> x_cm  <= (shield->x_cm + config->platformConfig.length/2) ) && ( state->x_cm >= (shield->x_cm - config->platformConfig.length/2) ))
         {
 
+            // check if the mass if below the velocity threshold
+            if ( ( abs(state->v.yvel) <= config->shieldConfig.minimumEffectivePerpendicularSpeed) && (shield->isBoosted == false) )
+            {
+                RTOS_ERR err;
+                OSFlagPost (game_over_flags,
+                            fell_thru_platform,
+                            OS_OPT_POST_FLAG_SET,
+                            &err);
+                EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+            }
 
 
 
@@ -87,11 +178,12 @@ void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* stat
         }
         else
         {
-            printf("\n Game Over \n");
-
-            // TODO Figure Out the Game over Condition
-
-            return;
+            RTOS_ERR err;
+            OSFlagPost (game_over_flags,
+                                  missed_platform,
+                                  OS_OPT_POST_FLAG_SET,
+                                  &err);
+            EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
         }
 
 
@@ -102,10 +194,14 @@ void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* stat
     {
         state->numMasses --;
 
-        if (state->numMasses == 0)
+        if (state->numMasses <= 0)
         {
-            printf("\n Game Over \n");
-            // TODO Figure Out the Game over Condition
+            RTOS_ERR err;
+            OSFlagPost (game_over_flags,
+                        winner_winner,
+                        OS_OPT_POST_FLAG_SET,
+                        &err);
+            EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
             return;
         }
 
