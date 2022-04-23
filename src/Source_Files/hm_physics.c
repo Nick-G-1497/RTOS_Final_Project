@@ -142,7 +142,7 @@ void update_hm_physics(ShieldPosition_t* shield, Harkonnen_Mass_Position_t* stat
         {
 
             // check if the mass if below the velocity threshold
-            if ( ( abs(state->v.yvel) <= config->shieldConfig.minimumEffectivePerpendicularSpeed) && (shield->isBoosted == false) )
+            if ( ( fabs(state->v.yvel) <= config->shieldConfig.minimumEffectivePerpendicularSpeed) && (shield->isBoosted == false) )
             {
                 RTOS_ERR err;
                 OSFlagPost (game_over_flags,

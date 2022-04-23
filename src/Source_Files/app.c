@@ -1179,20 +1179,71 @@ static void BoostTask(void* random_arguement_parameter)
 }
 
 
-//static void DesiredShieldForceTask(void* random_arguement_parameter)
-//{
-//  RTOS_ERR err;
-//  PP_UNUSED_PARAM(random_arguement_parameter);
-//
-//  pwm_init (PWM0_TIMER, &PWM0);
-//  pwm_start(PWM0_TIMER);
-//  while (1)
-//    {
-//      OSTimeDly(100, OS_OPT_TIME_DLY, &err);
-//      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
-//    }
-//
-//}
+static void DesiredShieldForceTask(void* random_arguement_parameter)
+{
+  RTOS_ERR err;
+  PP_UNUSED_PARAM(random_arguement_parameter);
+
+  pwm_init (PWM0_TIMER, &PWM0);
+  pwm_start(PWM0_TIMER);
+
+  float t_till_impact;
+  float F_needed;
+  float x_crit;
+
+  while (1)
+    {
+      OSTimeDly(100, OS_OPT_TIME_DLY, &err);
+      EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+      // mutex
+
+
+      OSMutexPend (&HM_mux,
+                    100,
+                    OS_OPT_PEND_BLOCKING,
+                    NULL,
+                    &err);
+      EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
+      // mutex locks on the shield_position and hm_position
+      OSMutexPend (&shield_mux,
+                   100,
+                   OS_OPT_PEND_BLOCKING,
+                   NULL,
+                   &err);
+      EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
+      float t1 = (-hm_position.v.yvel + sqrtf(pow(hm_position.v.yvel, 2) - (2*(config.gravity)*hm_position.y_cm)))/(config.gravity);
+      float t2 = (-hm_position.v.yvel - sqrtf(pow(hm_position.v.yvel, 2) - (2*(config.gravity)*hm_position.y_cm)))/(config.gravity);
+
+      t_till_impact = t1 > t2 ? t1 : t2;
+
+      EFM_ASSERT(t_till_impact >= 0);
+
+      x_crit = shield_position.x_cm + shield_position.velocity_x * t_till_impact;
+
+      F_needed = sqrtf(2*shield_position.mass*(shield_position.x_cm + shield_position.velocity_x*t_till_impact - x_crit));
+
+
+      OSMutexPost(&shield_mux,
+                  OS_OPT_POST_NONE,
+                  &err);
+
+      OSMutexPost(&HM_mux,
+                  OS_OPT_POST_NONE,
+                  &err);
+
+
+
+      // Translate Desired Force into a duty cycle
+
+
+
+
+    }
+
+}
 
 //
 //static void Idle(void* random_arguement_parameter)
