@@ -52,9 +52,22 @@ int main(void)
 
   CPU_Init();
   OS_TRACE_INIT();
+
+  OS_TASK_CFG config = {
+      .StkBasePtr = DEF_NULL,
+      .StkSize = 256u,
+      .Prio = 5u,
+      .RateHz = 100u
+
+  };
+
+  OS_ConfigureTmrTask(&config);
+
   OSInit(&err);                                               /* Initialize the Kernel.                               */
   /*   Check error code.                                  */
   EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+
 
   app_init();
 
@@ -74,6 +87,8 @@ int main(void)
   // ====================================================================================================================
   // ====================================================================================================================
   os_object_init();
+
+
 
 
   OSStart(&err);                                              /* Start the kernel.                                    */

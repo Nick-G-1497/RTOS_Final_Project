@@ -67,7 +67,7 @@
 // <q OS_CFG_TICK_EN> Enable ticks support
 // <i> Enable or disable support for ticks (Delay functions, pend with timeouts, etc).
 // <i> Default: 1
-#define  OS_CFG_TICK_EN                                     1
+#define  OS_CFG_TICK_EN                                     DEF_ENABLED
 
 // <q OS_CFG_TS_EN> Add timestamping capabilities
 // <i> Default: 1

@@ -513,13 +513,13 @@ void app_init(void)
   GameConfigurations_v3_t ConfigData = {
        .version = 3,
        .tauPhysics = 10,
-       .tauLCD = 10,
+       .tauLCD = 100,
        .gravity = -980,
-       .canyonSize = 1000,
+       .canyonSize = 10000,
        .holtzmanMassesConfig =
        {
           .num =  3,
-          .displayDiameter = 60,
+          .displayDiameter = 600,
           .initialConditions = 0,
           .initialVelocity =
           {
@@ -533,7 +533,7 @@ void app_init(void)
        {
            .maxForce = 2000,
            .mass = 3,
-           .length = 200,
+           .length = 2000,
            .cw_bounce =
            {
                .enabled = true,
@@ -549,7 +549,7 @@ void app_init(void)
            {
                .kineticEnergyIncrease = 20,
                .armingWindowBeforeImpact = 20,
-               .rechargeTimeAfterDisarm = 10
+               .rechargeTimeAfterDisarm = 1000
            },
        },
        .laserConfig =
@@ -564,7 +564,7 @@ void app_init(void)
   Harkonnen_Mass_Position_t HM0 =
       {
           .x_cm = 0,
-          .y_cm = 300,
+          .y_cm = (128/118) * config.canyonSize - 100,
 
           .v = {
               .xvel = 0,

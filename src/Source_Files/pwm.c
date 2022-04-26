@@ -5,6 +5,7 @@
  *      Author: nickg
  */
 #include "pwm.h"
+#include "os.h"
 
 
 /**************************************************************************//**
@@ -51,6 +52,9 @@
 
      RTOS_ERR err;
 
+     OS_TICK now = OSTimeGet(&err);
+     EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
 
      // increment the counter variable
      this->counter ++;
@@ -62,7 +66,7 @@
 
      // compare the counter against the DC (duty cycle) value. On match
      //      drive PWM pin LOW
-     if (this->counter >= this->duty_cycle_percent/10)
+     if (this->counter >= this->duty_cycle_percent)
      {
          digitalWrite(this->port, this->pin, 0);
      }
@@ -70,7 +74,7 @@
 
      // compare the counter against the period value. On match -> {Drive PWM
      //     Pin HIGH, Reset the counter}
-     if (this->counter >= 100/10)
+     if (this->counter >= 100)
      {
          digitalWrite(this->port, this->pin, 1);
          this->counter = 0;
