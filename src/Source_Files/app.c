@@ -511,19 +511,19 @@ void app_init(void)
   // task_init();
 
   GameConfigurations_v3_t ConfigData = {
-       .version = 3,
+       .version = 4,
        .tauPhysics = 10,
-       .tauLCD = 100,
-       .gravity = -980,
-       .canyonSize = 10000,
+       .tauLCD = 150,
+       .gravity = -9800,
+       .canyonSize = 100000,
        .holtzmanMassesConfig =
        {
           .num =  3,
-          .displayDiameter = 600,
+          .displayDiameter = 10000,
           .initialConditions = 0,
           .initialVelocity =
           {
-              .xvel = 1500,
+              .xvel = 4000,
               .yvel = 0
           },
           .initialHorizontalPosition = 0,
@@ -531,9 +531,9 @@ void app_init(void)
        },
        .platformConfig =
        {
-           .maxForce = 2000,
-           .mass = 3,
-           .length = 2000,
+           .maxForce = 20000000,
+           .mass = 100,
+           .length = 15000,
            .cw_bounce =
            {
                .enabled = true,
@@ -543,12 +543,12 @@ void app_init(void)
        },
        .shieldConfig =
        {
-           .minimumEffectivePerpendicularSpeed = 3000,
-           .exclusivelyPassiveBounceKineticEnergyReduction = 10,
+           .minimumEffectivePerpendicularSpeed = 1000,
+           .exclusivelyPassiveBounceKineticEnergyReduction = 70,
            .boostConfig =
            {
-               .kineticEnergyIncrease = 20,
-               .armingWindowBeforeImpact = 20,
+               .kineticEnergyIncrease = 40,
+               .armingWindowBeforeImpact = 500,
                .rechargeTimeAfterDisarm = 1000
            },
        },
