@@ -249,6 +249,7 @@ void GPIO_EVEN_IRQHandler(void){
   RTOS_ERR err;
 
   boostTime.mostRecentPressTime = OSTimeGet(&err);
+  OSSemPost(&boost_button_semaphore, OS_OPT_POST_ALL, &err);
 
 
 
@@ -437,7 +438,7 @@ void os_object_init (void)
     OSTmrCreate(&slider_timer,
                            "Slider State Timer",
                            20,
-                           (int) config.tauPhysics/10,
+                           5,
                            OS_OPT_TMR_PERIODIC,
                            slider_state_timer_callback_function,
                            (void*) 0,
@@ -492,6 +493,12 @@ void os_object_init (void)
                        &err);
     EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
+    OSSemCreate (&boost_button_semaphore,
+                          "Boost Button Semaphore",
+                          0,
+                          &err);
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
     OSFlagCreate (&game_over_flags,
                         "End Game Flags",
                         0x00,
@@ -514,16 +521,16 @@ void app_init(void)
        .version = 4,
        .tauPhysics = 10,
        .tauLCD = 150,
-       .gravity = -9800,
+       .gravity = -4800,
        .canyonSize = 100000,
        .holtzmanMassesConfig =
        {
           .num =  3,
-          .displayDiameter = 10000,
+          .displayDiameter = 8000,
           .initialConditions = 0,
           .initialVelocity =
           {
-              .xvel = 4000,
+              .xvel = 0,
               .yvel = 0
           },
           .initialHorizontalPosition = 0,
@@ -531,9 +538,9 @@ void app_init(void)
        },
        .platformConfig =
        {
-           .maxForce = 20000000,
+           .maxForce = 2500,
            .mass = 100,
-           .length = 15000,
+           .length = 20000,
            .cw_bounce =
            {
                .enabled = true,
@@ -630,7 +637,7 @@ static void HM_Physics_Task (void* random_arguement_parameter)
           // mutex locks on the shield_position and hm_position
           // mutex locks on the shield_position and hm_position
           OSMutexPend (&HM_mux,
-                        100,
+                        10,
                         OS_OPT_PEND_BLOCKING,
                         NULL,
                         &err);
@@ -638,24 +645,24 @@ static void HM_Physics_Task (void* random_arguement_parameter)
 
           // mutex locks on the shield_position and hm_position
           OSMutexPend (&shield_mux,
-                       100,
+                       10,
                        OS_OPT_PEND_BLOCKING,
                        NULL,
                        &err);
           EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
-            update_hm_physics ( &shield_position,
+          update_hm_physics ( &shield_position,
                               &hm_position,
                               &config,
                               &game_over_flags);
           OSMutexPost(&shield_mux,
                       OS_OPT_POST_NONE,
                       &err);
-
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
           OSMutexPost(&HM_mux,
                       OS_OPT_POST_NONE,
                       &err);
-
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
       }
 
@@ -676,7 +683,7 @@ static void LaserTask(void* random_arguement_parameter)
   {
 
     OSSemPend(&laser_semaphore,
-                          100,
+                          10,
                           OS_OPT_PEND_BLOCKING,
                           NULL,
                           &err);
@@ -687,7 +694,7 @@ static void LaserTask(void* random_arguement_parameter)
           num_laser_activations --;
 
           OSMutexPend (&HM_mux,
-                                  100,
+                                  10,
                                   OS_OPT_PEND_BLOCKING,
                                   NULL,
                                   &err);
@@ -702,7 +709,7 @@ static void LaserTask(void* random_arguement_parameter)
           OSMutexPost(&HM_mux,
                       OS_OPT_POST_NONE,
                       &err);
-
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
         }
 
@@ -732,12 +739,13 @@ static void SliderStateTask(void* random_arguement_parameter)
   {
       // Add kernel call to awake the task periodically
       OSSemPend(&slider_semaphore,
-                      100,
+                      0,
                       OS_OPT_PEND_BLOCKING,
                       NULL,
                       &err);
       if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
       {
+      OSTimeDly(5, OS_OPT_TIME_DLY, &err);
 
         // Add call to read the slider position
         CAPSENSE_Sense();
@@ -768,7 +776,7 @@ static void SliderStateTask(void* random_arguement_parameter)
         }
 
         OSMutexPend (&shield_mux,
-                      100,
+                      10,
                       OS_OPT_PEND_BLOCKING,
                       NULL,
                       &err);
@@ -780,6 +788,7 @@ static void SliderStateTask(void* random_arguement_parameter)
         OSMutexPost(&shield_mux,
                     OS_OPT_POST_NONE,
                     &err);
+        EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
 
       }
@@ -918,9 +927,9 @@ static void LCD_Display(void* random_arguement_parameter)
                                     &err);
              EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-             OSTmrDel (&slider_timer,
-                         &err);
-             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+//             OSTmrDel (&slider_timer,
+//                         &err);
+//             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
              OSTmrDel (&hm_physics_timer,
                       &err);
@@ -1050,7 +1059,7 @@ static void LCD_Display(void* random_arguement_parameter)
 
           // mutex locks on the shield_position and hm_position
           OSMutexPend (&shield_mux,
-                        100,
+                        10,
                         OS_OPT_PEND_BLOCKING,
                         NULL,
                         &err);
@@ -1060,6 +1069,7 @@ static void LCD_Display(void* random_arguement_parameter)
           OSMutexPost(&shield_mux,
                               OS_OPT_POST_NONE,
                               &err);
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
 
 
@@ -1075,7 +1085,7 @@ static void LCD_Display(void* random_arguement_parameter)
 
 
           OSMutexPend (&HM_mux,
-                        100,
+                        10,
                         OS_OPT_PEND_BLOCKING,
                         NULL,
                         &err);
@@ -1153,39 +1163,46 @@ static void BoostTask(void* random_arguement_parameter)
 
   while (1)
   {
-      OSTimeDly(5, OS_OPT_TIME_DLY, &err);
-      if (boostTime.mostRecentPressTime > boostTime.mostRecentBoostActivationTime + config.shieldConfig.boostConfig.armingWindowBeforeImpact + config.shieldConfig.boostConfig.rechargeTimeAfterDisarm)
+      OSSemPend(&boost_button_semaphore,
+                0,
+                OS_OPT_PEND_BLOCKING,
+                NULL,
+                &err);
+
+      if (boostTime.mostRecentPressTime > boostTime.mostRecentBoostActivationTime + config.shieldConfig.boostConfig.armingWindowBeforeImpact/100 + config.shieldConfig.boostConfig.rechargeTimeAfterDisarm/100)
       {
           boostTime.mostRecentBoostActivationTime = boostTime.mostRecentPressTime;
 
           OSMutexPend (&shield_mux,
-                        100,
+                        10,
                         OS_OPT_PEND_BLOCKING,
                         NULL,
                         &err);
           EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
           shield_position.isBoosted = true;
 
-          // start OS timer to set isBoosted to false
-          OSTmrStart(&boost_timer, &err);
-
-
           OSMutexPost(&shield_mux,
                               OS_OPT_POST_NONE,
                               &err);
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
+          // start OS timer to set isBoosted to false
+          OSTmrStart(&boost_timer, &err);
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
 
 
       }
       OSSemPend(&boost_deactivate_semaphore,
-                100,
-                OS_OPT_PEND_NON_BLOCKING,
+                0,
+                OS_OPT_PEND_BLOCKING,
                 NULL,
                 &err);
       // if the semaphore pend didn't time out
       if ((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE))
       {
           OSMutexPend (&shield_mux,
-                           100,
+                           10,
                            OS_OPT_PEND_BLOCKING,
                            NULL,
                            &err);
@@ -1195,6 +1212,7 @@ static void BoostTask(void* random_arguement_parameter)
           OSMutexPost(&shield_mux,
                                OS_OPT_POST_NONE,
                                &err);
+          EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
       }
 
@@ -1255,10 +1273,12 @@ static void DesiredShieldForceTask(void* random_arguement_parameter)
                   OS_OPT_POST_NONE,
                   &err);
 
+      EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+
       OSMutexPost(&HM_mux,
                   OS_OPT_POST_NONE,
                   &err);
-
+      EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
 
       // Translate Desired Force into a duty cycle

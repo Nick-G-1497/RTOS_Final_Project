@@ -55,12 +55,12 @@
 /**
  * OS level priority of the boost task
  */
-#define BOOST_TASK_PRIORITY 18
+#define BOOST_TASK_PRIORITY 15
 
 /**
  * OS level priority of the laser task
  */
-#define LASER_TASK_PRIORITY 18
+#define LASER_TASK_PRIORITY 16
 
 /**
  * OS level priority of the task dedicated to determining the slider state
@@ -70,7 +70,7 @@
 /**
  * OS level priority to the task updating the Harkonnen Mass Physics
  */
-#define HM_PHYSICS_PRIORITY 16
+#define HM_PHYSICS_PRIORITY 17
 
 
 ///**
@@ -131,6 +131,7 @@ static OS_SEM LCD_semaphore;
 static OS_SEM hm_physics_semaphore;
 static OS_SEM laser_semaphore;
 static OS_SEM boost_deactivate_semaphore;
+static OS_SEM boost_button_semaphore;
 
 
 
