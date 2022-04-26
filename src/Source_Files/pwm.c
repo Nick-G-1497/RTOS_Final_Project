@@ -55,14 +55,14 @@
      // increment the counter variable
      this->counter ++;
 
-     if (this->counter == 1)
+     if (this->counter == 0)
      {
          digitalWrite(this->port, this->pin, 1);
      }
 
      // compare the counter against the DC (duty cycle) value. On match
      //      drive PWM pin LOW
-     if (this->counter >= this->duty_cycle_percent)
+     if (this->counter >= this->duty_cycle_percent/8)
      {
          digitalWrite(this->port, this->pin, 0);
      }
@@ -70,7 +70,7 @@
 
      // compare the counter against the period value. On match -> {Drive PWM
      //     Pin HIGH, Reset the counter}
-     if (this->counter >= 100)
+     if (this->counter >= 100/8)
      {
          digitalWrite(this->port, this->pin, 1);
          this->counter = 0;
@@ -127,8 +127,8 @@
 
    OSTmrCreate (timer,
                       parameters->timer_name,
-                      20,
-                      10,
+                      1,
+                      1,
                       OS_OPT_TMR_PERIODIC,
                       pwm_callback_function,
                       parameters,

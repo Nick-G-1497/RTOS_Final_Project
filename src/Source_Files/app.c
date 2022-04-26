@@ -58,7 +58,7 @@ struct node_t* fifo;
 
 pwm_paramaters_t PWM0 = {
 //  .frequency_HZ = 50, // frequency
-  .duty_cycle_percent = 98, // duty cycle
+  .duty_cycle_percent = 50, // duty cycle
   // .timer = &PWM0_timer, // timer
   .timer_name = "PWM0 Timer", // name
   .port = gpioPortF, // port
@@ -467,7 +467,7 @@ void os_object_init (void)
                            lcd_timer_callback_function,
                            (void*) 0,
                            &err);
-        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+    EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
     OSTmrCreate(&boost_timer,
                            "Boost Timer",
@@ -913,6 +913,21 @@ static void LCD_Display(void* random_arguement_parameter)
                                 &err);
          if (game_over != 0x00)
          {
+
+             OSTmrDel (&LCD_timer,
+                                    &err);
+             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+             OSTmrDel (&slider_timer,
+                         &err);
+             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+             OSTmrDel (&hm_physics_timer,
+                      &err);
+             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+             pwm_start(&PWM0_timer);
+
              if (game_over == missed_platform)
              {
                  glibContext.backgroundColor = White;
