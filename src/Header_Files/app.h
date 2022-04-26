@@ -86,6 +86,11 @@
 #define DESIRED_SHIELD_FORCE_PRIORITY 22
 
 /**
+ * OS level priority of the task dedicated to the desired shield force
+ */
+#define CURRENT_FORCE_PRIORITY 22
+
+/**
  * OS level priority of the shield force task
  */
 #define SHIELD_FORCE_TASK_PRIORITY 20

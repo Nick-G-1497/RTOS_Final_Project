@@ -110,6 +110,11 @@ OS_TCB DesiredShieldForce_TCB;
 OS_TCB ShieldForce_TCB;
 
 /**
+ * Vehicle Direction Task Control Block
+ */
+OS_TCB CurrentForce_TCB;
+
+/**
  * Idle Task Control Block
  */
 OS_TCB IdleTask_TCB;
@@ -132,6 +137,8 @@ CPU_STK ShieldPhysics_TaskStack[TASK_STK_SIZE];
 CPU_STK HM_Physics_TaskStack [TASK_STK_SIZE];
 
 CPU_STK  Boost_TaskStack [TASK_STK_SIZE];
+
+CPU_STK CurrentForce_TaskStack[TASK_STK_SIZE];
 
 /**
  * Button Task Stack of size TASK_STK_SIZE
@@ -223,6 +230,7 @@ static void DesiredShieldForceTask(void* random_arguement_parameter);
 static void HM_Physics_Task (void* random_arguement_parameter);
 
 
+static void CurrentForceTask (void* random_arguement_parameter);
 ///**
 // * Task declaration for task responsible for updating the shield physics
 // * @param random_arguement_parameter
@@ -361,6 +369,21 @@ void task_init ()
           DEF_NULL,
           DESIRED_SHIELD_FORCE_PRIORITY,
           &DesiredShieldForce_TaskStack[0],
+          (TASK_STK_SIZE / 10),
+          TASK_STK_SIZE,
+          0u,
+          0u,
+          DEF_NULL,
+          (OS_OPT_TASK_STK_CLR),
+          &err);
+        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+    OSTaskCreate(&CurrentForce_TCB, /* Create the start task */
+          "Current Task",
+          CurrentForceTask,
+          DEF_NULL,
+          CURRENT_FORCE_PRIORITY,
+          &CurrentForce_TaskStack[0],
           (TASK_STK_SIZE / 10),
           TASK_STK_SIZE,
           0u,
@@ -751,10 +774,10 @@ static void SliderStateTask(void* random_arguement_parameter)
         CAPSENSE_Sense();
 
         for (int i = 0; i < 4; i++)
-          {
-            channel_values[i] = 0;
-            channel_values[i] = CAPSENSE_getPressed(i);
-          }
+        {
+          channel_values[i] = 0;
+          channel_values[i] = CAPSENSE_getPressed(i);
+        }
 
         float force = 0;
 
@@ -780,7 +803,7 @@ static void SliderStateTask(void* random_arguement_parameter)
                       OS_OPT_PEND_BLOCKING,
                       NULL,
                       &err);
-         EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 
         shield_position.current_force = force;
@@ -788,7 +811,7 @@ static void SliderStateTask(void* random_arguement_parameter)
         OSMutexPost(&shield_mux,
                     OS_OPT_POST_NONE,
                     &err);
-         EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+        EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
 
       }
@@ -1221,6 +1244,38 @@ static void BoostTask(void* random_arguement_parameter)
   }
 }
 
+static void CurrentForceTask(void* random_arguement_parameter)
+{
+  RTOS_ERR err;
+  PP_UNUSED_PARAM(random_arguement_parameter);
+
+  bool force_present = false;
+
+  while (1)
+  {
+    OSTimeDly(100, OS_OPT_TIME_DLY, &err);
+    OSMutexPend (&shield_mux,
+                 100,
+                 OS_OPT_PEND_BLOCKING,
+                 NULL,
+                 &err);
+    EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+    force_present = (shield_position.current_force !=  0);
+    OSMutexPost(&shield_mux,
+                OS_OPT_POST_NONE,
+                &err);
+
+    if (force_present)
+      {
+        digitalWrite(LED1_port, LED1_pin, 1);
+      }
+    else
+      {
+        digitalWrite(LED1_port, LED1_pin, 0);
+      }
+  }
+}
+
 
 static void DesiredShieldForceTask(void* random_arguement_parameter)
 {
@@ -1238,6 +1293,8 @@ static void DesiredShieldForceTask(void* random_arguement_parameter)
     {
       OSTimeDly(100, OS_OPT_TIME_DLY, &err);
       EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+
+
 
       // mutex
 
