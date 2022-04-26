@@ -530,7 +530,7 @@ void app_init(void)
           .initialConditions = 0,
           .initialVelocity =
           {
-              .xvel = 1400,
+              .xvel = 30000,
               .yvel = 0
           },
           .initialHorizontalPosition = 0,
@@ -551,7 +551,7 @@ void app_init(void)
        .shieldConfig =
        {
            .minimumEffectivePerpendicularSpeed = 30000,
-           .exclusivelyPassiveBounceKineticEnergyReduction = 70,
+           .exclusivelyPassiveBounceKineticEnergyReduction = 40,
            .boostConfig =
            {
                .kineticEnergyIncrease = 40,
