@@ -1285,7 +1285,7 @@ static void DesiredShieldForceTask(void* random_arguement_parameter)
   PP_UNUSED_PARAM(random_arguement_parameter);
 
 
-  // pwm_start(&PWM0_timer);
+//  pwm_start(&PWM0_timer);
 
   float t_till_impact;
   float F_needed;
