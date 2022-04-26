@@ -62,7 +62,7 @@
 
      // compare the counter against the DC (duty cycle) value. On match
      //      drive PWM pin LOW
-     if (this->counter >= this->duty_cycle_percent/8)
+     if (this->counter >= this->duty_cycle_percent/10)
      {
          digitalWrite(this->port, this->pin, 0);
      }
@@ -70,7 +70,7 @@
 
      // compare the counter against the period value. On match -> {Drive PWM
      //     Pin HIGH, Reset the counter}
-     if (this->counter >= 100/8)
+     if (this->counter >= 100/10)
      {
          digitalWrite(this->port, this->pin, 1);
          this->counter = 0;
