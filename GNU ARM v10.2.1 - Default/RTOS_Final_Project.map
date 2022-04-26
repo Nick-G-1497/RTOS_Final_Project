@@ -15013,15 +15013,14 @@ LOAD c:/siliconlabs/simplicitystudio/v5/developer/toolchains/gnu_arm/10.2_2020q4
                 0x0000c900      0x2a4 ./src/Source_Files/app.o
                 0x0000c900                os_object_init
  .text.app_init
-                0x0000cba4      0x1c8 ./src/Source_Files/app.o
+                0x0000cba4      0x1cc ./src/Source_Files/app.o
                 0x0000cba4                app_init
  .text.HM_Physics_Task
-                0x0000cd6c       0xc8 ./src/Source_Files/app.o
+                0x0000cd70       0xc8 ./src/Source_Files/app.o
  .text.LaserTask
-                0x0000ce34       0xb8 ./src/Source_Files/app.o
+                0x0000ce38       0xb8 ./src/Source_Files/app.o
  .text.SliderStateTask
-                0x0000ceec      0x138 ./src/Source_Files/app.o
- *fill*         0x0000d024        0x4 
+                0x0000cef0      0x138 ./src/Source_Files/app.o
  .text.LCD_Display
                 0x0000d028      0x900 ./src/Source_Files/app.o
  .text.BoostTask

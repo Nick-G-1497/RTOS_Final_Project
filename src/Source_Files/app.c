@@ -532,7 +532,7 @@ void app_init(void)
        .platformConfig =
        {
            .maxForce = 2000,
-           .mass = 5,
+           .mass = 3,
            .length = 200,
            .cw_bounce =
            {
