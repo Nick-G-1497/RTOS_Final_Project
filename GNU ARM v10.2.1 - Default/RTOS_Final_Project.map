@@ -16940,7 +16940,7 @@ LOAD linker stubs
  .debug_macro   0x00040677      0x48b ./src/Source_Files/pwm.o
  .debug_macro   0x00040b02      0x63f ./src/main.o
 
-.debug_line     0x00000000    0x39fa0
+.debug_line     0x00000000    0x39fa1
  .debug_line    0x00000000      0xc23 ./SystemView/SEGGER_RTT.o
  .debug_line    0x00000c23       0x90 ./SystemView/SEGGER_RTT_ASM_ARMv7M.o
  .debug_line    0x00000cb3     0x1e66 ./SystemView/SEGGER_SYSVIEW.o
@@ -16992,14 +16992,14 @@ LOAD linker stubs
  .debug_line    0x0002fbdb      0xeff ./gecko_sdk_3.2.2/platform/service/sleeptimer/src/sl_sleeptimer_hal_rtcc.o
  .debug_line    0x00030ada      0x939 ./gecko_sdk_3.2.2/platform/service/udelay/src/sl_udelay.o
  .debug_line    0x00031413       0xac ./gecko_sdk_3.2.2/platform/service/udelay/src/sl_udelay_armv6m_gcc.o
- .debug_line    0x000314bf     0x1be1 ./src/Source_Files/app.o
- .debug_line    0x000330a0     0x105e ./src/Source_Files/bsp_os.o
- .debug_line    0x000340fe     0x12a0 ./src/Source_Files/capsense.o
- .debug_line    0x0003539e      0xa25 ./src/Source_Files/cmu.o
- .debug_line    0x00035dc3      0xd64 ./src/Source_Files/gpio.o
- .debug_line    0x00036b27     0x10c4 ./src/Source_Files/hm_physics.o
- .debug_line    0x00037beb     0x101e ./src/Source_Files/pwm.o
- .debug_line    0x00038c09     0x1397 ./src/main.o
+ .debug_line    0x000314bf     0x1be2 ./src/Source_Files/app.o
+ .debug_line    0x000330a1     0x105e ./src/Source_Files/bsp_os.o
+ .debug_line    0x000340ff     0x12a0 ./src/Source_Files/capsense.o
+ .debug_line    0x0003539f      0xa25 ./src/Source_Files/cmu.o
+ .debug_line    0x00035dc4      0xd64 ./src/Source_Files/gpio.o
+ .debug_line    0x00036b28     0x10c4 ./src/Source_Files/hm_physics.o
+ .debug_line    0x00037bec     0x101e ./src/Source_Files/pwm.o
+ .debug_line    0x00038c0a     0x1397 ./src/main.o
 
 .debug_str      0x00000000   0x17db7e
  .debug_str     0x00000000     0x6bfe ./SystemView/SEGGER_RTT.o

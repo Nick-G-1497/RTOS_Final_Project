@@ -958,7 +958,7 @@ static void LCD_Display(void* random_arguement_parameter)
                       &err);
              EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-             pwm_start(&PWM0_timer);
+
 
              if (game_over == missed_platform)
              {
@@ -998,6 +998,7 @@ static void LCD_Display(void* random_arguement_parameter)
                                       5,
                                       false);
                  DMD_updateDisplay();
+                 pwm_start(&PWM0_timer);
 
                  while (1)
                    {}
@@ -1035,6 +1036,7 @@ static void LCD_Display(void* random_arguement_parameter)
                                        false);
 
                  DMD_updateDisplay();
+                 pwm_start(&PWM0_timer);
 
                  while (1)
                    {}
