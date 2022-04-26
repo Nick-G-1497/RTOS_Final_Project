@@ -555,8 +555,8 @@ void app_init(void)
            .boostConfig =
            {
                .kineticEnergyIncrease = 40,
-               .armingWindowBeforeImpact = 500,
-               .rechargeTimeAfterDisarm = 1000
+               .armingWindowBeforeImpact = 300,
+               .rechargeTimeAfterDisarm = 500
            },
        },
        .laserConfig =
@@ -1169,7 +1169,7 @@ static void BoostTask(void* random_arguement_parameter)
                 NULL,
                 &err);
 
-      if (boostTime.mostRecentPressTime > boostTime.mostRecentBoostActivationTime + config.shieldConfig.boostConfig.armingWindowBeforeImpact/100 + config.shieldConfig.boostConfig.rechargeTimeAfterDisarm/100)
+      if (boostTime.mostRecentPressTime > boostTime.mostRecentBoostActivationTime + config.shieldConfig.boostConfig.armingWindowBeforeImpact + config.shieldConfig.boostConfig.rechargeTimeAfterDisarm)
       {
           boostTime.mostRecentBoostActivationTime = boostTime.mostRecentPressTime;
 
