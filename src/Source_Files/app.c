@@ -530,7 +530,7 @@ void app_init(void)
           .initialConditions = 0,
           .initialVelocity =
           {
-              .xvel = 0,
+              .xvel = 1400,
               .yvel = 0
           },
           .initialHorizontalPosition = 0,
@@ -550,7 +550,7 @@ void app_init(void)
        },
        .shieldConfig =
        {
-           .minimumEffectivePerpendicularSpeed = 1000,
+           .minimumEffectivePerpendicularSpeed = 30000,
            .exclusivelyPassiveBounceKineticEnergyReduction = 70,
            .boostConfig =
            {
@@ -570,7 +570,7 @@ void app_init(void)
 
   Harkonnen_Mass_Position_t HM0 =
       {
-          .x_cm = 0,
+          .x_cm = 420,
           .y_cm = (128/118) * config.canyonSize - 100,
 
           .v = {
@@ -776,11 +776,11 @@ static void SliderStateTask(void* random_arguement_parameter)
         }
 
         OSMutexPend (&shield_mux,
-                      10,
+                      100,
                       OS_OPT_PEND_BLOCKING,
                       NULL,
                       &err);
-        EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+         EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
 
         shield_position.current_force = force;
@@ -788,7 +788,7 @@ static void SliderStateTask(void* random_arguement_parameter)
         OSMutexPost(&shield_mux,
                     OS_OPT_POST_NONE,
                     &err);
-        EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
+         EFM_ASSERT(RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE);
 
 
       }
@@ -927,9 +927,9 @@ static void LCD_Display(void* random_arguement_parameter)
                                     &err);
              EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
-//             OSTmrDel (&slider_timer,
-//                         &err);
-//             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
+             OSTmrDel (&slider_timer,
+                         &err);
+             EFM_ASSERT((RTOS_ERR_CODE_GET(err) == RTOS_ERR_NONE));
 
              OSTmrDel (&hm_physics_timer,
                       &err);
